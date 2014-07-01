@@ -1,0 +1,7 @@
+DEPTH = ..
+
+ARCH=x86
+FCP_INSTALL = $(INST_USR_X86)
+FCP_INSTALL_TEST = $(INST_TESTS_X86)
+
+include ../Rules.mk
