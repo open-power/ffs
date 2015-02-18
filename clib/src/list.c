@@ -40,14 +40,14 @@ void list_dump(list_t * self, FILE * out)
 
 	fprintf(out,
 		"===================================================================\n");
-	fprintf(out, "head: %8x node: %8x\n", (uint32_t) self,
-		(uint32_t) & self->node);
+	fprintf(out, "head: %8lx node: %8lx\n", (ulong) self,
+		(ulong) & self->node);
 
 	list_node_t *node = &self->node;
 	do {
-		fprintf(out, "    node: %8x - prev: %8x - next: %8x\n",
-			(uint32_t) node, (uint32_t) node->prev,
-			(uint32_t) node->next);
+		fprintf(out, "    node: %8lx - prev: %8lx - next: %8lx\n",
+			(ulong) node, (ulong) node->prev,
+			(ulong) node->next);
 		node = node->next;
 	} while (node != &self->node);
 

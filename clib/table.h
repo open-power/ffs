@@ -130,7 +130,7 @@ typedef struct table table_t;	//!< Alias for the @em table class
  * @param col_nr [in] Number of columns
  * @return None
  */
-extern int table_init(table_t *, const char *, size_t)
+extern int table_init(table_t *, const char *, uint32_t)
 /*! @cond */
 __nonnull((1, 2)) /*! @endcond */ ;
 

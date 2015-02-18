@@ -247,7 +247,7 @@ static int validate_args(args_t * args)
 			args->file = strdup(args->path);
 			assert(args->file != NULL);
 			sprintf((char *)args->file, "%*s",
-				strlen(args->path) - strlen(ECC_EXT),
+				(uint32_t)(strlen(args->path) - strlen(ECC_EXT)),
 				args->path);
 
 			fprintf(stderr, "%s: --output <file> missing, writing "

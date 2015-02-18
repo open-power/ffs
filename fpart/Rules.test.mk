@@ -22,7 +22,7 @@
 # permissions and limitations under the License.
 #
 # IBM_PROLOG_END_TAG
-CFLAGS += -m32 -D_GNU_SOURCE -std=gnu99 -D_FILE_OFFSET_BITS=64 -I$(DEPTH)/apps -iquote..
+CFLAGS += -D_GNU_SOURCE -std=gnu99 -D_FILE_OFFSET_BITS=64 -I$(DEPTH)/apps -iquote..
 LDFLAGS += -L. -L$(DEPTH)/apps/clib/$(ARCH_DEP_DIR)
 
 OBJS=test_libffs.o

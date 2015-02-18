@@ -148,7 +148,7 @@ static int Check_Leak_List(const void *p)
 
 				/* Check the ending sentinel. */
 				Ending_Sentinel =
-				    (Sentinel_t *) ((unsigned int)Current_Item +
+				    (Sentinel_t *) ((unsigned long)Current_Item +
 						    sizeof(Memory_Leak_Data_t) +
 						    Current_Item->User_Size);
 				if (*Ending_Sentinel == SENTINEL_VALUE) {
@@ -165,7 +165,7 @@ static int Check_Leak_List(const void *p)
 							Data_Start =
 							    (unsigned
 							     long)((unsigned
-								    int)
+								    long)
 								   Current_Item
 								   +
 								   sizeof
@@ -216,7 +216,7 @@ static int Check_Leak_List(const void *p)
 						"     Size: %d\n"
 						"     Allocated in module %s, function %s, at line %d\n",
 						Current_Item,
-						(void *)((unsigned int)
+						(void *)((unsigned long)
 							 Current_Item +
 							 sizeof
 							 (Memory_Leak_Data_t)),
@@ -235,7 +235,7 @@ static int Check_Leak_List(const void *p)
 					"     Address: %p\n" "     Size: %d\n"
 					"     Allocated in module %s, function %s, at line %d\n",
 					Current_Item,
-					(void *)((unsigned int)Current_Item +
+					(void *)((unsigned long)Current_Item +
 						 sizeof(Memory_Leak_Data_t)),
 					Current_Item->User_Size,
 					Current_Item->Module_Name,
@@ -261,7 +261,7 @@ static int Check_Leak_List(const void *p)
 				Current_Item->Signature,
 				Current_Item->Signature, LEAK_SIGNATURE,
 				LEAK_SIGNATURE,
-				(void *)((unsigned int)Current_Item +
+				(void *)((unsigned long)Current_Item +
 					 sizeof(Memory_Leak_Data_t)),
 				Current_Item->User_Size,
 				Current_Item->User_Size,
@@ -428,7 +428,7 @@ static void Remove_Memory_Allocation_From_Chain(Memory_Leak_Data_t *
 
 	/* Calculate the address of the ending sentinel so that we can access it. */
 	Ending_Sentinel =
-	    (Sentinel_t *) ((unsigned int)Memory_Leak_Data +
+	    (Sentinel_t *) ((unsigned long)Memory_Leak_Data +
 			    sizeof(Memory_Leak_Data_t) +
 			    Memory_Leak_Data->User_Size);
 
@@ -506,7 +506,7 @@ void Print_Leak_List(void)
 
 				/* Check the ending sentinel. */
 				Ending_Sentinel =
-				    (Sentinel_t *) ((unsigned int)Current_Item +
+				    (Sentinel_t *) ((unsigned long)Current_Item +
 						    sizeof(Memory_Leak_Data_t) +
 						    Current_Item->User_Size);
 				if (*Ending_Sentinel == SENTINEL_VALUE) {
@@ -526,7 +526,7 @@ void Print_Leak_List(void)
 					"     Allocated in module %s, function %s, at line %d\n\n",
 					Current_Item->Mem_Address,
 					Current_Item,
-					(void *)((unsigned int)Current_Item +
+					(void *)((unsigned long)Current_Item +
 						 sizeof(Memory_Leak_Data_t)),
 					Current_Item->Alignment,
 					Current_Item->User_Size,
@@ -543,7 +543,7 @@ void Print_Leak_List(void)
 					"     Alignment: %u\n" "     Size: %d\n"
 					"     Allocated in module %s, function %s, at line %d\n\n",
 					Current_Item->Mem_Address, Current_Item,
-					(void *)((unsigned int)Current_Item +
+					(void *)((unsigned long)Current_Item +
 						 sizeof(Memory_Leak_Data_t)),
 					Current_Item->Alignment,
 					Current_Item->User_Size,
@@ -569,7 +569,7 @@ void Print_Leak_List(void)
 				Current_Item->Signature,
 				Current_Item->Signature, LEAK_SIGNATURE,
 				LEAK_SIGNATURE,
-				(void *)((unsigned int)Current_Item +
+				(void *)((unsigned long)Current_Item +
 					 sizeof(Memory_Leak_Data_t)),
 				Current_Item->Alignment,
 				Current_Item->User_Size,
@@ -677,7 +677,7 @@ int MEMORY_func(size_t sz,
 	    if (sz == 0) {
 		Error = EINVAL;
 		fprintf(stderr,
-			"MALLOC: request is invalid - size[%u] in module %s, function %s at line %d\n",
+			"MALLOC: request is invalid - size[%lu] in module %s, function %s at line %d\n",
 			sz, mod_name, func, line);
 		print_backtrace();
 	}
@@ -702,7 +702,7 @@ int MEMORY_func(size_t sz,
 
 		if (Error) {
 			fprintf(stderr,
-				"MEMORY_func: request for aligned memory uses invalid alignment! size[%u], alignment [%u] in module %s, function %s at line %d\n",
+				"MEMORY_func: request for aligned memory uses invalid alignment! size[%lu], alignment [%u] in module %s, function %s at line %d\n",
 				sz, Alignment, mod_name, func, line);
 		}
 
@@ -711,7 +711,7 @@ int MEMORY_func(size_t sz,
 	if (Memory_Location == NULL) {
 		Error = EINVAL;
 		fprintf(stderr,
-			"MEMORY_func: Location to place address of allocated memory is NULL! size[%u], alignment [%u] in module %s, function %s at line %d\n",
+			"MEMORY_func: Location to place address of allocated memory is NULL! size[%lu], alignment [%u] in module %s, function %s at line %d\n",
 			sz, Alignment, mod_name, func, line);
 	} else
 		*Memory_Location = NULL;
@@ -748,13 +748,13 @@ int MEMORY_func(size_t sz,
 				Memory_Leak_Data = (Memory_Leak_Data_t *) ptr;
 			} else {
 				Proposed_User_Address =
-				    (unsigned int)ptr +
+				    (unsigned long)ptr +
 				    sizeof(Memory_Leak_Data_t);
 				Shift_Amount =
 				    Alignment -
 				    (Proposed_User_Address % Alignment);
 				Memory_Leak_Data =
-				    (Memory_Leak_Data_t *) ((unsigned int)ptr +
+				    (Memory_Leak_Data_t *) ((unsigned long)ptr +
 							    Shift_Amount);
 			}
 
@@ -764,12 +764,12 @@ int MEMORY_func(size_t sz,
 			/* Create the address to return to the caller.  This address should be the first byte after
 			   our memory leak data.                                                                      */
 			ptr =
-			    (void *)((unsigned int)Memory_Leak_Data +
+			    (void *)((unsigned long)Memory_Leak_Data +
 				     sizeof(Memory_Leak_Data_t));
 
 			/* Calculate the address of the trailing sentinel. */
 			Ending_Sentinel =
-			    (Sentinel_t *) ((unsigned int)ptr + sz);
+			    (Sentinel_t *) ((unsigned long)ptr + sz);
 
 			/* Initialize our memory leak data. */
 			Memory_Leak_Data->Signature = LEAK_SIGNATURE;
@@ -920,7 +920,7 @@ void FREE_func(const void *p, const char *mod_name, const char *func,
 	     * prevent wrap around when we subtract sizeof(Memory_Leak_Data_t) to get the starting address of
 	     * the memory leak data associated with p.
 	     */
-	    if ((p == NULL) || ((unsigned int)p <= sizeof(Memory_Leak_Data_t))) {
+	    if ((p == NULL) || ((unsigned long)p <= sizeof(Memory_Leak_Data_t))) {
 		fprintf(stderr,
 			"FREE: request has invalid user address [%p].  Request came from module %s, function %s, line %d\n",
 			p, mod_name, func, line);
@@ -942,7 +942,7 @@ void FREE_func(const void *p, const char *mod_name, const char *func,
 		if (!Check_Leak_List(p)) {
 			/* Get access to the memory leak data. */
 			Memory_Leak_Data =
-			    (Memory_Leak_Data_t *) ((unsigned int)p -
+			    (Memory_Leak_Data_t *) ((unsigned long)p -
 						    sizeof(Memory_Leak_Data_t));
 
 			USER3_PRINT_LINE
@@ -1178,7 +1178,7 @@ void *Realloc_func(void *p, size_t size, const char *mod_name, const char *func,
 						/* Get access to the memory leak data. */
 						Memory_Leak_Data =
 						    (Memory_Leak_Data_t
-						     *) ((unsigned int)p -
+						     *) ((unsigned long)p -
 							 sizeof
 							 (Memory_Leak_Data_t));
 

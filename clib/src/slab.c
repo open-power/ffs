@@ -63,7 +63,7 @@ typedef struct slab_node slab_node_t;
 struct slab_node {
 	uint8_t magic[4];
 
-	size_t free;
+	uint32_t free;
 	tree_node_t node;
 
 	uint32_t bitmap[];
@@ -98,7 +98,7 @@ static slab_node_t *__slab_grow(slab_t * self)
 
 	node->free = SLAB_ALLOC_COUNT(self);
 
-	tree_node_init(&node->node, (const void *)int32_hash1((int32_t) node));
+	tree_node_init(&node->node, (const void *)int64_hash1((int64_t) node));
 	splay_insert(&self->tree, &node->node);
 
 	self->hdr.page_count++;
@@ -108,21 +108,21 @@ static slab_node_t *__slab_grow(slab_t * self)
 
 /* ======================================================================= */
 
-int slab_init3(slab_t * self, const char *name, size_t alloc_size)
+int slab_init3(slab_t * self, const char *name, uint32_t alloc_size)
 {
 	size_t page_size = max(sysconf(_SC_PAGESIZE),
 			       __round_pow2(alloc_size * SLAB_PAGE_DIVISOR));
 	return slab_init5(self, name, alloc_size, page_size, page_size);
 }
 
-int slab_init4(slab_t * self, const char *name, size_t alloc_size,
+int slab_init4(slab_t * self, const char *name, uint32_t alloc_size,
 	       size_t page_size)
 {
 	size_t align_size = (size_t) sysconf(_SC_PAGESIZE);
 	return slab_init5(self, name, alloc_size, page_size, align_size);
 }
 
-int slab_init5(slab_t * self, const char *name, size_t alloc_size,
+int slab_init5(slab_t * self, const char *name, uint32_t alloc_size,
 	       size_t page_size, size_t align_size)
 {
 	assert(self != NULL);
@@ -144,7 +144,7 @@ int slab_init5(slab_t * self, const char *name, size_t alloc_size,
 		return -1;
 	}
 
-	size_t __page_size = (size_t) sysconf(_SC_PAGESIZE);
+	uint32_t __page_size = (uint32_t) sysconf(_SC_PAGESIZE);
 
 	align_size = __round_pow2(align_size);
 	if (align_size % __page_size) {
@@ -286,7 +286,7 @@ int slab_free(slab_t * self, void *ptr)
 	assert(node != NULL);
 
 	if (unlikely(SLAB_NODE_MAGIC_CHECK(node->magic))) {
-		int32_t hash = int32_hash1((int32_t) node);
+		int64_t hash = int64_hash1((int64_t) node);
 		if (splay_find(&self->tree, (const void *)hash) == NULL) {
 			UNEXPECTED("'%s' invalid slab_node pointer, %p",
 				   self->hdr.name, ptr);

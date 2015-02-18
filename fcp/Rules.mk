@@ -22,10 +22,10 @@
 # permissions and limitations under the License.
 #
 # IBM_PROLOG_END_TAG
-CFLAGS += -m32 -D_GNU_SOURCE -std=gnu99 -D_FILE_OFFSET_BITS=64
+CFLAGS += -D_GNU_SOURCE -std=gnu99 -D_FILE_OFFSET_BITS=64
 CFLAGS += -I$(DEPTH)/.. -iquote..
 
-LDFLAGS += -L. -m32
+LDFLAGS += -L.
 
 NAME=fcp
 

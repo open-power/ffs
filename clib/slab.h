@@ -89,13 +89,13 @@ struct slab_header {
 	ident_t id;		//!< identification
 	char name[SLAB_NAME_SIZE];	//!< slab name
 
-	size_t page_size;	//!< page size
-	size_t align_size;	//!< page alignment size
-	size_t page_count;	//!< page count
+	uint32_t page_size;	//!< page size
+	uint32_t align_size;	//!< page alignment size
+	uint32_t page_count;	//!< page count
 
-	size_t alloc_size;	//!< allocation size
-	size_t data_size;	//!< data size
-	size_t bitmap_size;	//!< bitmap size
+	uint32_t alloc_size;	//!< allocation size
+	uint32_t data_size;	//!< data size
+	uint32_t bitmap_size;	//!< bitmap size
 };
 typedef struct slab_header slab_header_t;
 
@@ -122,11 +122,11 @@ typedef struct slab slab_t;	//!< Alias for the @em slab class
  */
 /*! @cond */
 #define slab_init(...) STRCAT(slab_init, NARGS(__VA_ARGS__))(__VA_ARGS__)
-extern int slab_init3(slab_t * self, const char *name, size_t alloc_size)
+extern int slab_init3(slab_t * self, const char *name, uint32_t alloc_size)
 __nonnull((1, 2));
-extern int slab_init4(slab_t * self, const char *name, size_t alloc_size,
+extern int slab_init4(slab_t * self, const char *name, uint32_t alloc_size,
 		      size_t page_size) __nonnull((1, 2));
-extern int slab_init5(slab_t * self, const char *name, size_t alloc_size,
+extern int slab_init5(slab_t * self, const char *name, uint32_t alloc_size,
 		      size_t page_size, size_t align_size) __nonnull((1, 2));
 /*! @endcond */
 

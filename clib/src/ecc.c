@@ -50,17 +50,7 @@
 #include "ecc.h"
 #include "builtin.h"
 #include "attribute.h"
-
-#ifndef be64toh
-#include <byteswap.h>
-#if __BYTE_ORDER == __LITTLE_ENDIAN
-#define be64toh(x) __bswap_64(x)
-#define htobe64(x) __bswap_64(x)
-#else
-#define be64toh(x) (x)
-#define htobe64(x) (x)
-#endif
-#endif
+#include "misc.h"
 
 /*
  * This is an alternative way to calculate the ECC byte taken
@@ -185,11 +175,11 @@ static void __ecc_dump(FILE * __out, uint32_t __addr,
 
 		fprintf(__out,
 			"[%.8s_%.8s %.*s%.2s%.*s %.8s_%.8s %.*s%.2s%.*s] ",
-			hex + 0, hex + 8, (c1 != e1) ? strlen(ansi_red) : 0,
-			ansi_red, hex + 16, (c1 != e1) ? strlen(ansi_norm) : 0,
+			hex + 0, hex + 8, (c1 != e1) ? (uint32_t)strlen(ansi_red) : 0,
+			ansi_red, hex + 16, (c1 != e1) ? (uint32_t)strlen(ansi_norm) : 0,
 			ansi_norm, hex + 18, hex + 26,
-			(c2 != e2) ? strlen(ansi_red) : 0, ansi_red, hex + 34,
-			(c2 != e2) ? strlen(ansi_norm) : 0, ansi_norm);
+			(c2 != e2) ? (uint32_t)strlen(ansi_red) : 0, ansi_red, hex + 34,
+			(c2 != e2) ? (uint32_t)strlen(ansi_norm) : 0, ansi_norm);
 
 		fprintf(__out, "[%.8s %.8s]\n", ascii + 0, ascii + 9);
 	}

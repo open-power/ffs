@@ -99,7 +99,7 @@ int parse_offset(const char *str, off_t *offset)
 	return 0;
 }
 
-int parse_size(const char *str, size_t *size)
+int parse_size(const char *str, uint32_t *size)
 {
 	assert(size != NULL);
 
@@ -136,7 +136,7 @@ int parse_size(const char *str, size_t *size)
 	return 0;
 }
 
-int parse_number(const char *str, size_t *num)
+int parse_number(const char *str, uint32_t *num)
 {
 	assert(num != NULL);
 
@@ -240,7 +240,7 @@ FILE *fopen_generic(const char *path, const char *mode, int debug)
 	assert(mode != NULL);
 
 	FILE *file = NULL;
-	size_t port = 0;
+	uint32_t port = 0;
 
 	if (strncasecmp(path, "aa:", 3) == 0) {
 		if (parse_number(path + 3, &port) == 0)

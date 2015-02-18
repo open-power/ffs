@@ -458,7 +458,7 @@ ffs_t *__ffs_fcreate(FILE *file, off_t offset, uint32_t block_size,
 	}
 	if (offset & (block_size - 1)) {
 		UNEXPECTED("'%lld' invalid offset (must be 'block size' "
-			   "aligned)", offset);
+			   "aligned)", (long long)offset);
 		return NULL;
 	}
 
@@ -810,8 +810,8 @@ int __ffs_list_entries(ffs_t * self, const char * name, bool user, FILE * out)
 
 	int print_entry(ffs_entry_t * entry)
 	{
-		size_t offset = entry->base * self->hdr->block_size;
-		size_t size = entry->size * self->hdr->block_size;
+		uint32_t offset = entry->base * self->hdr->block_size;
+		uint32_t size = entry->size * self->hdr->block_size;
 
                 if (__ffs_entry_name(self, entry, full_name,
 				     sizeof full_name) < 0)
@@ -848,7 +848,7 @@ int __ffs_list_entries(ffs_t * self, const char * name, bool user, FILE * out)
 		}
 
 		fprintf(out, "========================[ PARTITION TABLE 0x%llx "
-			"]=======================\n", self->offset);
+			"]=======================\n", (long long)self->offset);
 		fprintf(out, "vers:%04x size:%04x * blk:%06x blk(s):%06x * "
 			"entsz:%06x ent(s):%06x\n",
 			self->hdr->version, self->hdr->size,
@@ -942,7 +942,7 @@ int __ffs_entry_name(ffs_t *self, ffs_entry_t *entry, char *name, size_t size)
 	return __entry_name(entry, name, size);
 }
 
-int __ffs_entry_add(ffs_t * self, const char *path, off_t offset, size_t size,
+int __ffs_entry_add(ffs_t * self, const char *path, off_t offset, uint32_t size,
 		    ffs_type_t type, uint32_t flags)
 {
 	assert(self != NULL);
@@ -963,7 +963,7 @@ int __ffs_entry_add(ffs_t * self, const char *path, off_t offset, size_t size,
 		if (overlap != NULL) {
 			UNEXPECTED("'%s' at offset %lld and size %d overlaps "
 				   "'%s' at offset %d and size %d",
-				   path, offset, size, overlap->name,
+				   path, (long long)offset, size, overlap->name,
 				   overlap->base * hdr->block_size,
 				   overlap->size * hdr->block_size);
 			return -1;
@@ -1034,7 +1034,7 @@ int __ffs_entry_delete(ffs_t * self, const char *path)
 	ffs_entry_t entry;
 	if (__ffs_entry_find(self, path, &entry) == false) {
 		UNEXPECTED("entry '%s' not found in table at offset '%llx'",
-			  path, self->offset);
+			  path, (long long)self->offset);
 		return -1;
 	}
 
@@ -1097,7 +1097,7 @@ int __ffs_entry_user_get(ffs_t *self, const char *path, uint32_t word,
 	ffs_entry_t *entry = __find_entry(self->hdr, path);
 	if (entry == NULL) {
 		UNEXPECTED("entry '%s' not found in partition table at "
-			   "offset '%llx'", path, self->offset);
+			   "offset '%llx'", path, (long long)self->offset);
 		return -1;
 	}
 
@@ -1121,7 +1121,7 @@ int __ffs_entry_user_put(ffs_t *self, const char *path, uint32_t word,
 	ffs_entry_t *entry = __find_entry(self->hdr, path);
 	if (entry == NULL) {
 		UNEXPECTED("entry '%s' not found in partition table at "
-			   "offset '%llx'", path, self->offset);
+			   "offset '%llx'", path, (long long)self->offset);
 		return -1;
 	}
 
@@ -1139,7 +1139,7 @@ ssize_t __ffs_entry_hexdump(ffs_t * self, const char *path, FILE * out)
 	ffs_entry_t entry;
 	if (__ffs_entry_find(self, path, &entry) == false) {
 		UNEXPECTED("entry '%s' not found in table at offset '%llx'",
-			   path, self->offset);
+			   path, (long long)self->offset);
 		return -1;
 	}
 
@@ -1186,7 +1186,7 @@ ssize_t __ffs_entry_truncate(ffs_t * self, const char *path, size_t size)
 	ffs_entry_t * entry = __find_entry(self->hdr, path);
 	if (entry == NULL) {
 		UNEXPECTED("entry '%s' not found in partition table at "
-			   "offset '%llx'", path, self->offset);
+			   "offset '%llx'", path, (long long)self->offset);
 		return -1;
 	}
 
@@ -1215,7 +1215,7 @@ ssize_t __ffs_entry_read(ffs_t * self, const char *path, void *buf,
 	ffs_entry_t entry;
 	if (__ffs_entry_find(self, path, &entry) == false) {
 		UNEXPECTED("entry '%s' not found in partition table at "
-			   "offset '%llx'", path, self->offset);
+			   "offset '%llx'", path, (long long)self->offset);
 		return -1;
 	}
 
@@ -1271,7 +1271,7 @@ ssize_t __ffs_entry_write(ffs_t * self, const char *path, const void *buf,
 	ffs_entry_t *entry = __find_entry(self->hdr, path);
 	if (entry == NULL) {
 		UNEXPECTED("entry '%s' not found in partition table at "
-			   "offset '%llx'", path, self->offset);
+			   "offset '%llx'", path, (long long)self->offset);
 		return -1;
 	}
 

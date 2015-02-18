@@ -75,8 +75,8 @@ int command_list(args_t * args)
 	int __list_entry(ffs_entry_t * entry)
 	{
 
-		size_t offset = entry->base * __ffs->hdr->block_size;
-		size_t size = entry->size * __ffs->hdr->block_size;
+		uint32_t offset = entry->base * __ffs->hdr->block_size;
+		uint32_t size = entry->size * __ffs->hdr->block_size;
 
                 if (__ffs_entry_name(__ffs, entry, full_name,
 				     sizeof full_name) < 0)
@@ -135,7 +135,7 @@ int command_list(args_t * args)
 		if (0 < ffs->count) {
 			printf("========================[ PARTITION TABLE"
 				" 0x%llx ]=======================\n",
-				ffs->offset);
+				(long long)ffs->offset);
 			printf("vers:%04x size:%04x * blk:%06x blk(s):"
 				"%06x * entsz:%06x ent(s):%06x\n",
 				ffs->hdr->version,

@@ -22,10 +22,10 @@
 # permissions and limitations under the License.
 #
 # IBM_PROLOG_END_TAG
-CFLAGS += -m32 -D_GNU_SOURCE -std=gnu99 -fshort-enums -D_FILE_OFFSET_BITS=64
-CFLAGS += -iquote$(DEPTH)
+CFLAGS += -D_GNU_SOURCE -std=gnu99 -fshort-enums -D_FILE_OFFSET_BITS=64
+CFLAGS += -iquote$(DEPTH) -fPIC
 
-LDFLAGS=-L. -m32
+LDFLAGS=-L.
 
 # array.o array_iter.o dispatch.o watch.o signal.o heap.o
 
@@ -48,7 +48,7 @@ vpath	%.h ..
 all: $(TARGETS)
 
 libclib.so: $(OBJS)
-	$(CC) $(LDFLAGS) -fPIC -shared -Wl,-soname,$@ -o $@ $^ -lpthread \
+	$(CC) $(LDFLAGS) -shared -Wl,-soname,$@ -o $@ $^ -lpthread \
 		-lrt
 
 libclib.a: $(OBJS)

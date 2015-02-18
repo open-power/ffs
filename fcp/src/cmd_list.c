@@ -78,7 +78,7 @@ static int list(args_t * args, off_t offset)
 		return 0;
 
 	fprintf(stdout, "========================[ PARTITION TABLE"
-		" 0x%llx ]=======================\n", ffs->offset);
+		" 0x%llx ]=======================\n", (long long)ffs->offset);
 	fprintf(stdout, "vers:%04x size:%04x * blk:%06x blk(s):"
 		"%06x * entsz:%06x ent(s):%06x\n",
 		ffs->hdr->version, ffs->hdr->size, ffs->hdr->block_size,
@@ -105,8 +105,8 @@ static int list(args_t * args, off_t offset)
 				     sizeof full_name) < 0)
 			return -1;
 
-		size_t offset = entry->base * ffs->hdr->block_size;
-		size_t size = entry->size * ffs->hdr->block_size;
+		uint32_t offset = entry->base * ffs->hdr->block_size;
+		uint32_t size = entry->size * ffs->hdr->block_size;
 
 		char type;
 		if (entry->type == FFS_TYPE_LOGICAL)

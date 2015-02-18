@@ -65,8 +65,8 @@ extern ffs_entry_t * entry_list_find(entry_list_t *, const char *);
 extern int entry_list_dump(entry_list_t *, FILE *);
 
 extern int parse_offset(const char *, off_t *);
-extern int parse_size(const char *, size_t *);
-extern int parse_number(const char *, size_t *);
+extern int parse_size(const char *, uint32_t *);
+extern int parse_number(const char *, uint32_t *);
 extern int parse_path(const char *, char **, char **, char **);
 
 extern int dump_errors(const char *, FILE *);

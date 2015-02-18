@@ -62,7 +62,7 @@ static int validate_files(ffs_t * src, ffs_t * dst)
 	assert(src != NULL);
 	assert(dst != NULL);
 
-	size_t s, d;
+	uint32_t s, d;
 
 	if (__ffs_info(src, FFS_INFO_BLOCK_SIZE, &s) < 0)
 		return -1;
@@ -131,28 +131,28 @@ static int __copy_entry(args_t * args,
 	if (dst_entry->type == FFS_TYPE_LOGICAL) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: logical partition (skip)\n",
-			        dst_ffs->offset, full_dst_name);
+			        (long long)dst_ffs->offset, full_dst_name);
 		return 0;
 	}
 
 	if (src_entry->type == FFS_TYPE_LOGICAL) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: logical partition (skip)\n",
-			        src_ffs->offset, full_src_name);
+			        (long long)src_ffs->offset, full_src_name);
 		return 0;
 	}
 
 	if (dst_entry->type == FFS_TYPE_PARTITION) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: partition table (skip)\n",
-			        dst_ffs->offset, full_dst_name);
+			        (long long)dst_ffs->offset, full_dst_name);
 		return 0;
 	}
 
 	if (src_entry->type == FFS_TYPE_PARTITION) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: partition table (skip)\n",
-			        src_ffs->offset, full_src_name);
+			        (long long)src_ffs->offset, full_src_name);
 		return 0;
 	}
 
@@ -160,14 +160,14 @@ static int __copy_entry(args_t * args,
 		if (dst_entry->flags & FFS_FLAGS_PROTECTED) {
 			if (args->verbose == f_VERBOSE)
 				fprintf(stderr, "%8llx: %s: protected "
-					"partition (skip)\n", dst_ffs->offset,
+					"partition (skip)\n", (long long)dst_ffs->offset,
 					full_dst_name);
 			return 0;
 		}
 		if (src_entry->flags & FFS_FLAGS_PROTECTED) {
 			if (args->verbose == f_VERBOSE)
 				fprintf(stderr, "%8llx: %s: protected "
-					"partition (skip)\n", src_ffs->offset,
+					"partition (skip)\n", (long long)src_ffs->offset,
 				        full_src_name);
 			return 0;
 		}
@@ -175,14 +175,14 @@ static int __copy_entry(args_t * args,
 
 	if (src_entry->size != dst_entry->size) {
 		UNEXPECTED("%8llx: %s: source partition '%s' size mismatch "
-			   "'%x', use --force to overwrite\n", dst_ffs->offset,
+			   "'%x', use --force to overwrite\n", (long long)dst_ffs->offset,
 			   full_dst_name, full_src_name, dst_entry->size);
 		return -1;
 	}
 
 	if (src_entry->type != dst_entry->type) {
 		UNEXPECTED("%8llx: %s: source partition '%s' type mismatch "
-			   "'%x', use --force to overwrite\n", dst_ffs->offset,
+			   "'%x', use --force to overwrite\n", (long long)dst_ffs->offset,
 			   full_dst_name, full_src_name, dst_entry->size);
 		return -1;
 	}
@@ -194,7 +194,7 @@ static int __copy_entry(args_t * args,
 	}
 	if (args->verbose == f_VERBOSE)
 		fprintf(stderr, "%8llx: %s: trunc size '%x' (done)\n",
-			dst_ffs->offset, full_dst_name, src_entry->actual);
+			(long long)dst_ffs->offset, full_dst_name, src_entry->actual);
 
 	uint32_t src_val, dst_val;
 	for (uint32_t i=0; i<FFS_USER_WORDS; i++) {
@@ -213,13 +213,13 @@ static int __copy_entry(args_t * args,
 	if (args->verbose == f_VERBOSE)
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: copy user[] from '%s' "
-				"(done)\n", dst_ffs->offset, full_dst_name,
+				"(done)\n", (long long)dst_ffs->offset, full_dst_name,
 				src_ffs->path);
 
 	if (entry_list_exists(done_list, src_entry) == 1) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: copy from '%s' (skip)\n",
-		       		dst_ffs->offset, full_dst_name, src_ffs->path);
+		       		(long long)dst_ffs->offset, full_dst_name, src_ffs->path);
 		return 0;
 	}
 
@@ -231,7 +231,7 @@ static int __copy_entry(args_t * args,
 
 	if (args->verbose == f_VERBOSE)
 		fprintf(stderr, "%8llx: %s: copy from '%s' (done)\n",
-		        dst_ffs->offset, full_dst_name, src_ffs->path);
+		        (long long)dst_ffs->offset, full_dst_name, src_ffs->path);
 
 	return 0;
 }
@@ -256,14 +256,14 @@ static int __compare_entry(args_t * args,
 	if (dst_entry->type == FFS_TYPE_LOGICAL) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: logical partition (skip)\n",
-			        dst_ffs->offset, full_dst_name);
+			        (long long)dst_ffs->offset, full_dst_name);
 		return 0;
 	}
 
 	if (src_entry->type == FFS_TYPE_LOGICAL) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: logical partition (skip)\n",
-			        src_ffs->offset, full_src_name);
+			        (long long)src_ffs->offset, full_src_name);
 		return 0;
 	}
 
@@ -271,14 +271,14 @@ static int __compare_entry(args_t * args,
 		if (dst_entry->flags & FFS_FLAGS_PROTECTED) {
 			if (args->verbose == f_VERBOSE)
 				fprintf(stderr, "%8llx: %s: protected "
-					"partition (skip)\n", dst_ffs->offset,
+					"partition (skip)\n", (long long)dst_ffs->offset,
 					full_dst_name);
 			return 0;
 		}
 		if (src_entry->flags & FFS_FLAGS_PROTECTED) {
 			if (args->verbose == f_VERBOSE)
 				fprintf(stderr, "%8llx: %s: protected "
-					"partition (skip)\n", src_ffs->offset,
+					"partition (skip)\n", (long long)src_ffs->offset,
 				       full_src_name);
 			return 0;
 		}
@@ -286,14 +286,14 @@ static int __compare_entry(args_t * args,
 
 	if (src_entry->size != dst_entry->size) {
 		UNEXPECTED("%8llx: %s: source partition '%s' size mismatch "
-			   "'%x', use --force to overwrite\n", dst_ffs->offset,
+			   "'%x', use --force to overwrite\n", (long long)dst_ffs->offset,
 			   full_dst_name, full_src_name, dst_entry->size);
 		return -1;
 	}
 
 	if (src_entry->type != dst_entry->type) {
 		UNEXPECTED("%8llx: %s: source partition '%s' type mismatch "
-			   "'%x', use --force to overwrite\n", dst_ffs->offset,
+			   "'%x', use --force to overwrite\n", (long long)dst_ffs->offset,
 			   full_dst_name, full_src_name, dst_entry->size);
 		return -1;
 	}
@@ -301,7 +301,7 @@ static int __compare_entry(args_t * args,
 	if (entry_list_exists(done_list, src_entry) == 1) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: compare from '%s' (skip)\n",
-				dst_ffs->offset, full_dst_name, src_ffs->path);
+				(long long)dst_ffs->offset, full_dst_name, src_ffs->path);
 		return 0;
 	}
 
@@ -314,7 +314,7 @@ static int __compare_entry(args_t * args,
 
 	if (args->verbose == f_VERBOSE)
 		fprintf(stderr, "%8llx: %s: compare from '%s' (done)\n",
-			dst_ffs->offset, full_dst_name, src_ffs->path);
+			(long long)dst_ffs->offset, full_dst_name, src_ffs->path);
 
 	return 0;
 }
@@ -324,7 +324,7 @@ static int __force_part(ffs_t * src, FILE * dst)
 	assert(src != NULL);
 	assert(dst != NULL);
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(src, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
@@ -404,7 +404,7 @@ static int __copy_compare(args_t * args, off_t offset, entry_list_t * done_list)
 
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: partition table '%s' => '%s' "
-				"(done)\n", offset, src_target, dst_target);
+				"(done)\n", (long long)offset, src_target, dst_target);
 	}
 
 	if (check_file(dst_target, dst_file, offset) < 0)
@@ -422,12 +422,12 @@ static int __copy_compare(args_t * args, off_t offset, entry_list_t * done_list)
 	if (src_ffs->count <= 0)		// fix me
 		return 0;
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(src_ffs, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
 	if (args->buffer != NULL) {
-		size_t buffer;
+		uint32_t buffer;
 		if (parse_size(args->buffer, &buffer) < 0)
 			return -1;
 		if (__ffs_buffer(src_ffs, buffer) < 0)
@@ -447,14 +447,14 @@ static int __copy_compare(args_t * args, off_t offset, entry_list_t * done_list)
 	} else if ((src_name != NULL) && (dst_name != NULL)) {
 		if (__ffs_entry_find(src_ffs, src_name, &src_parent) == false) {
 			UNEXPECTED("%8llx: partition entry '%s' not found in "
-				   "'%s'\n", src_ffs->offset, src_name,
+				   "'%s'\n", (long long)src_ffs->offset, src_name,
 				   src_target);
 			return -1;
 		}
 
 		if (__ffs_entry_find(dst_ffs, dst_name, &dst_parent) == false) {
 			UNEXPECTED("%8llx: partition entry '%s' not found in "
-				   "'%s'\n", dst_ffs->offset, dst_name,
+				   "'%s'\n", (long long)dst_ffs->offset, dst_name,
 				   dst_target);
 			return -1;
 		}

@@ -60,9 +60,9 @@ int command_create(args_t * args)
 {
 	assert(args != NULL);
 
-	size_t block = 0;
-	size_t size = 0;
-	size_t pad = 0xff;
+	uint32_t block = 0;
+	uint32_t size = 0;
+	uint32_t pad = 0xff;
 
 	if (parse_size(args->block, &block) < 0)
 		return -1;
@@ -87,7 +87,7 @@ int command_create(args_t * args)
 			if (args->force != f_FORCE && st.st_size != size) {
 				UNEXPECTED("--size '%d' differs from actual "
 					   "size '%lld', use --force to "
-					   "override", size, st.st_size);
+					   "override", size, (long long)st.st_size);
 				return -1;
 			}
 		}
@@ -98,7 +98,7 @@ int command_create(args_t * args)
 	int create(args_t * args, off_t poffset)
 	{
 		if (args->verbose == f_VERBOSE)
-			printf("%llx: create partition table\n", poffset);
+			printf("%llx: create partition table\n", (long long)poffset);
 
 		const char * target = args->target;
 		int debug = args->debug;

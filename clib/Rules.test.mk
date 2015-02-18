@@ -22,7 +22,7 @@
 # permissions and limitations under the License.
 #
 # IBM_PROLOG_END_TAG
-CFLAGS += -m32 -std=gnu99 -D__USE_GNU -I$(DEPTH)/apps
+CFLAGS += -std=gnu99 -D__USE_GNU -I$(DEPTH)/apps
 LDFLAGS = -rdynamic -L$(DEPTH)/apps/clib/$(ARCH_DEP_DIR)
 
 TARGETS=exception	\

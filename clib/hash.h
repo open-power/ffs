@@ -26,7 +26,7 @@
 /*
  *   File: hash.h
  * Author: Shaun Wetzstein <shaun@us.ibm.com>
- *  Descr: Various int32 hash functions
+ *  Descr: Various int64 hash functions
  *   Note:
  *   Date: 10/03/10
  */
@@ -38,13 +38,13 @@
 
 /* ======================================================================= */
 
-static inline int32_t int32_hash1(int32_t);
+static inline int64_t int64_hash1(int64_t);
 
-typedef uint32_t(*hash_t) (char *, uint32_t);
+typedef uint64_t(*hash_t) (char *, uint64_t);
 
 /* ======================================================================= */
 
-static inline int32_t int32_hash1(int32_t key)
+static inline int64_t int64_hash1(int64_t key)
 {
 	key = ~key + (key << 15);
 	key = key ^ (key >> 12);

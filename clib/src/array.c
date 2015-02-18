@@ -99,7 +99,7 @@ const char *__array_msg[] = {
 
 #define __index_to_page_hashed(i,s)                             \
 ({                                                              \
-    typeof(i) _h = int32_hash1(__index_to_page((i),(s)));       \
+    typeof(i) _h = int64_hash1(__index_to_page((i),(s)));       \
     _h;                                                         \
 })
 

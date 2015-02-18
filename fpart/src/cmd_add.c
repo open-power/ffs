@@ -67,7 +67,7 @@ int command_add(args_t * args)
 		int rc = 0;
 
 		off_t offset = 0;
-		size_t size = 0;
+		uint32_t size = 0;
 		uint32_t flags = 0;
 
 		rc = parse_offset(args->offset, &offset);
@@ -97,8 +97,8 @@ int command_add(args_t * args)
 
 		if (args->verbose == f_VERBOSE)
 			printf("%llx: %s: add partition at offset '%llx' size "
-			       "'%x' type '%d' flags '%x'\n", poffset,
-				args->name, offset, size, type, flags);
+			       "'%x' type '%d' flags '%x'\n", (long long)poffset,
+				args->name, (long long)offset, size, type, flags);
 
 		return rc;
 	}

@@ -82,12 +82,12 @@ static int __write(args_t * args, off_t offset, entry_list_t * done_list)
 	if (ffs->count <= 0)
 		return 0;
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(ffs, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
 	if (args->buffer != NULL) {
-		size_t buffer;
+		uint32_t buffer;
 		if (parse_size(args->buffer, &buffer) < 0)
 			return -1;
 		if (__ffs_buffer(ffs, buffer) < 0)
@@ -108,7 +108,7 @@ static int __write(args_t * args, off_t offset, entry_list_t * done_list)
 	if (entry.type == FFS_TYPE_LOGICAL) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: logical (skip)\n",
-				offset, full_name);
+				(long long)offset, full_name);
 		return 0;
 	}
 
@@ -116,7 +116,7 @@ static int __write(args_t * args, off_t offset, entry_list_t * done_list)
 	    entry.flags & FFS_FLAGS_PROTECTED) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: protected (skip)\n",
-				offset, full_name);
+				(long long)offset, full_name);
 		return 0;
 	}
 
@@ -135,13 +135,13 @@ static int __write(args_t * args, off_t offset, entry_list_t * done_list)
 
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: trunc size '%llx' (done)\n",
-				offset, full_name, st.st_size);
+				(long long)offset, full_name, (long long)st.st_size);
 	}
 
 	if (entry_list_exists(done_list, &entry) == 1) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: read from '%s' (skip)\n",
-				offset, full_name, in_path);
+				(long long)offset, full_name, in_path);
 		return 0;
 	}
 
@@ -163,7 +163,7 @@ static int __write(args_t * args, off_t offset, entry_list_t * done_list)
 
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: read from '%s' (done)\n",
-				offset, full_name, in_path);
+				(long long)offset, full_name, in_path);
 	}
 
 	return 0;

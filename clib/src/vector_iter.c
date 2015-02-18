@@ -173,7 +173,7 @@ int vector_iter_pos2(vector_iter_t * self, size_t pos)
 	assert(self != NULL);
 
 	if (vector_size(self->vector) <= pos) {
-		UNEXPECTED("'%d' index out-of-range", pos);
+		UNEXPECTED("'%ld' index out-of-range", pos);
 		return -1;
 	}
 
