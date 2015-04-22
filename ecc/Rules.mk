@@ -22,8 +22,8 @@
 # permissions and limitations under the License.
 #
 # IBM_PROLOG_END_TAG
-CFLAGS += -m32 -D_GNU_SOURCE -std=gnu99 -D_FILE_OFFSET_BITS=64 -I$(DEPTH)/.. -iquote..
-LDFLAGS += -L. -L$(DEPTH)/../clib/x86 -m32
+CFLAGS += -D_GNU_SOURCE -std=gnu99 -D_FILE_OFFSET_BITS=64 -I$(DEPTH)/.. -iquote..
+LDFLAGS += -L. -L$(DEPTH)/../clib/x86
 
 OBJS=main.o
 

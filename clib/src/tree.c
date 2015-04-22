@@ -385,7 +385,7 @@ void tree_dump(tree_t * self, FILE * out)
 	int __tree_node_dump(tree_node_t * node) {
 		if (node != NULL)
 			return fprintf(out, "node[%p] left[%p] right[%p] "
-				       "parent[%p] -- key[%d]\n",
+				       "parent[%p] -- key[%ld]\n",
 				       node, node->left, node->right,
 				       node->parent, (intptr_t) node->key);
 		else
@@ -414,7 +414,7 @@ void tree_node_dump(tree_node_t * node, FILE * out)
 			}
 
 			fprintf(out, "node:[%p] left[%p] right[%p] parent[%p] "
-				"key[%d]\n", root, root->left, root->right,
+				"key[%ld]\n", root, root->left, root->right,
 				root->parent, (intptr_t) node->key);
 
 			level++;
@@ -591,7 +591,7 @@ int splay_remove(tree_t * self, tree_node_t * node)
 		}
 #else
 		if (self->root->left != NULL && self->root->right != NULL) {
-			if (parity(int32_hash1((int32_t) self->root))) {
+			if (parity(int64_hash1((int64_t) self->root))) {
 				x = splay(self->root->left, node->key,
 					  self->compare);
 				x->right = self->root->right;

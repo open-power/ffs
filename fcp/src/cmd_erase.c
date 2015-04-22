@@ -65,7 +65,7 @@ static int __erase(args_t * args, off_t offset, entry_list_t * done_list)
 	char * target = args->dst_target;
 	char * name = args->dst_name;
 
-	size_t fill;
+	uint32_t fill;
 	if (args->opt_nr == 1) {
 		fill = 0xFF;
 	} else if (args->opt_nr == 2) {
@@ -88,12 +88,12 @@ static int __erase(args_t * args, off_t offset, entry_list_t * done_list)
 	if (ffs->count <= 0)
 		return 0;
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(ffs, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
 	if (args->buffer != NULL) {
-		size_t buffer;
+		uint32_t buffer;
 		if (parse_size(args->buffer, &buffer) < 0)
 			return -1;
 		if (__ffs_buffer(ffs, buffer) < 0)
@@ -136,7 +136,7 @@ static int __erase(args_t * args, off_t offset, entry_list_t * done_list)
 			if (entry->flags & FFS_FLAGS_PROTECTED) {
 				if (args->verbose == f_VERBOSE)
 					fprintf(stderr, "%8llx: %s: protected "
-						"(skip)\n", offset, full_name);
+						"(skip)\n", (long long)offset, full_name);
 				continue;
 			}
 		}
@@ -147,12 +147,12 @@ static int __erase(args_t * args, off_t offset, entry_list_t * done_list)
 		}
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: trunc size '%x' (done)\n",
-			       offset, full_name, 0);
+			       (long long)offset, full_name, 0);
 
 		if (entry_list_exists(done_list, entry) == 1) {
 			if (args->verbose == f_VERBOSE)
 				fprintf(stderr, "%8llx: %s: erase partition "
-					"(skip)\n", offset, full_name);
+					"(skip)\n", (long long)offset, full_name);
 			continue;
 		}
 
@@ -164,7 +164,7 @@ static int __erase(args_t * args, off_t offset, entry_list_t * done_list)
 
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: erase partition (done)\n",
-			        offset, full_name);
+			        (long long)offset, full_name);
 	}
 
 	return 0;

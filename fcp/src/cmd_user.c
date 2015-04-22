@@ -79,12 +79,12 @@ static int __user(args_t * args, off_t offset)
 	if (ffs->count <= 0)
 		return 0;
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(ffs, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
 	if (args->buffer != NULL) {
-		size_t buffer;
+		uint32_t buffer;
 		if (parse_size(args->buffer, &buffer) < 0)
 			return -1;
 		if (__ffs_buffer(ffs, buffer) < 0)
@@ -106,7 +106,7 @@ static int __user(args_t * args, off_t offset)
 	    entry.flags && FFS_FLAGS_PROTECTED) {
 		if (args->verbose == f_VERBOSE)
 			fprintf(stderr, "%8llx: %s: protected (skip)\n",
-				offset, full_name);
+				(long long)offset, full_name);
 		return 0;
 	}
 
@@ -120,7 +120,7 @@ static int __user(args_t * args, off_t offset)
 				return -1;
 
 			fprintf(stdout, "%8llx: %s: [%02d] = %08x\n",
-				offset, full_name, word, value);
+				(long long)offset, full_name, word, value);
 		}
 		fprintf(stdout, "\n");
 	} else {
@@ -136,7 +136,7 @@ static int __user(args_t * args, off_t offset)
 			if (__value != NULL)
 				*__value = '\0';
 
-			size_t word = 0;
+			uint32_t word = 0;
 			if (parse_number(args->opt[i], &word) < 0)
 				return -1;
 
@@ -153,7 +153,7 @@ static int __user(args_t * args, off_t offset)
 
 				if (args->verbose == f_VERBOSE)
 					fprintf(stderr, "%8llx: %s: [%02d] = "
-						"%08x\n", offset, full_name,
+						"%08x\n", (long long)offset, full_name,
 						word, value);
 			} else {		// read
 				if (__ffs_entry_user_get(ffs, full_name,
@@ -162,7 +162,7 @@ static int __user(args_t * args, off_t offset)
 
 				if (isatty(fileno(stdout)))
 					fprintf(stdout, "%8llx: %s: [%02d] = "
-						"%08x\n", offset, full_name,
+						"%08x\n", (long long)offset, full_name,
 						word, value);
 				else
 					fprintf(stdout, "%x", value);

@@ -65,7 +65,7 @@ int command_erase(args_t * args)
 	if (strrchr(name, '$') == NULL)
 		strcat(name, "$");
 
-	size_t pad = 0xff;
+	uint32_t pad = 0xff;
 	if (args->pad != NULL)
 		if (parse_size(args->pad, &pad) < 0)
 			return -1;
@@ -97,7 +97,7 @@ int command_erase(args_t * args)
 		    args->force != f_FORCE) {
 			if (args->verbose == f_VERBOSE)
 				printf("%llx: %s: protected, skipping erase\n",
-			       	       __poffset, full_name);
+			       	       (long long)__poffset, full_name);
 			return 0;
 		}
 
@@ -105,7 +105,7 @@ int command_erase(args_t * args)
 			return -1;
 
 		if (args->verbose == f_VERBOSE)
-			printf("%llx: %s: truncate size '%x'\n", __poffset,
+			printf("%llx: %s: truncate size '%x'\n", (long long)__poffset,
 		       		full_name, 0);
 
 		for (uint32_t i=0; i<FFS_USER_WORDS; i++)
@@ -113,14 +113,14 @@ int command_erase(args_t * args)
 				return -1;
 
 		if (args->verbose == f_VERBOSE)
-			printf("%llx: %s: user[] zero\n", __poffset, full_name);
+			printf("%llx: %s: user[] zero\n", (long long)__poffset, full_name);
 
 		list_iter_init(&it, &list, LI_FLAG_FWD);
 		list_for_each(&it, node, node) {
 			if (node->entry.base == entry->base) {
 				if (args->verbose == f_VERBOSE)
 					printf("%llx: %s: skipping fill with "
-					       "'%x'\n", __poffset, full_name,
+					       "'%x'\n", (long long)__poffset, full_name,
 					       (uint8_t)pad);
 				return 0;
 			}
@@ -165,7 +165,7 @@ int command_erase(args_t * args)
 			return -1;
 
 		if (args->verbose == f_VERBOSE)
-			printf("%llx: %s: filled with '%x'\n", __poffset,
+			printf("%llx: %s: filled with '%x'\n", (long long)__poffset,
 	       	       		full_name, (uint8_t)pad);
 
 		return 0;

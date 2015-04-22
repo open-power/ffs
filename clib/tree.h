@@ -108,7 +108,7 @@ struct tree {
 	tree_node_t *max;	//!< reference to the node with largest 'key' in the tree
 
 	compare_f compare;	//!< Reference to the function used to distinguish tree_nodes
-	size_t size;		//!< Cache of the number of tree_node's contained in the @em tree
+	uint32_t size;		//!< Cache of the number of tree_node's contained in the @em tree
 };
 typedef struct tree tree_t;	//!< Alias for the @em tree class
 

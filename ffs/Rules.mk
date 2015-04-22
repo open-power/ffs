@@ -22,10 +22,10 @@
 # permissions and limitations under the License.
 #
 # IBM_PROLOG_END_TAG
-CFLAGS += -m32 -D_GNU_SOURCE -std=gnu99 -D_FILE_OFFSET_BITS=64
-CFLAGS += -I$(DEPTH)/.. -I$(DEPTH)/boot/fsp2_ipl -iquote..
+CFLAGS += -D_GNU_SOURCE -std=gnu99 -D_FILE_OFFSET_BITS=64
+CFLAGS += -I$(DEPTH)/.. -I$(DEPTH)/boot/fsp2_ipl -iquote.. -fPIC
 
-LDFLAGS += -L. -m32
+LDFLAGS += -L.
 
 NAME=libffs
 
@@ -41,7 +41,7 @@ vpath	%.h ..
 all: $(TARGETS)
 
 $(NAME).so: $(OBJS)
-	$(CC) $(LDFLAGS) -fPIC -shared -Wl,-soname,$@ -o $@ $^
+	$(CC) $(LDFLAGS) -shared -Wl,-soname,$@ -o $@ $^
 
 $(NAME).a: $(OBJS)
 	$(AR) -r $@ $^

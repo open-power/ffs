@@ -110,8 +110,8 @@ extern args_t args;
 extern size_t page_size;
 
 extern int parse_offset(const char *, off_t *);
-extern int parse_size(const char *, size_t *);
-extern int parse_number(const char *, size_t *);
+extern int parse_size(const char *, uint32_t *);
+extern int parse_number(const char *, uint32_t *);
 
 extern bool check_extension(const char *, const char *);
 extern int create_regular_file(const char *, size_t, char);

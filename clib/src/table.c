@@ -49,7 +49,7 @@
 #define TABLE_PAGE_DIVISOR      32
 
 /* ======================================================================= */
-int table_init(table_t * self, const char *name, size_t col_nr)
+int table_init(table_t * self, const char *name, uint32_t col_nr)
 {
 	assert(self != NULL);
 	assert(name != NULL);
@@ -635,7 +635,7 @@ void table_dump(table_t * self, FILE * out)
 		}
 
 		fprintf(out,
-			"table: [ size: %d cols: %d rows: %d  name: '%s']\n",
+			"table: [ size: %ld cols: %ld rows: %ld  name: '%s']\n",
 			sizeof(value_t), table_columns(self), table_rows(self),
 			self->hdr.name);
 

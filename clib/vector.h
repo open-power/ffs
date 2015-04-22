@@ -97,13 +97,13 @@ struct vector_header {
 	ident_t id;		//!< identification
 	char name[VECTOR_NAME_SIZE];	//!< vector name
 
-	size_t page_size;	//!< data page size (in bytes)
-	size_t page_count;	//!< number of data pages allocated (currently)
+	uint32_t page_size;	//!< data page size (in bytes)
+	uint32_t page_count;	//!< number of data pages allocated (currently)
 
-	size_t elem_size;	//!< element size (in bytes)
-	size_t elem_num;	//!< element count (per page)
+	uint32_t elem_size;	//!< element size (in bytes)
+	uint32_t elem_num;	//!< element count (per page)
 
-	size_t size;		//!< number of initialized elements
+	uint32_t size;		//!< number of initialized elements
 };
 typedef struct vector_header vector_header_t;	//!< Alias for the @em vector_header class
 
@@ -120,7 +120,7 @@ typedef struct vector vector_t;	//!< Alias for the @em vector class
 /* ======================================================================= */
 
 /*!
- * @fn void vector_init(vector_t * self, const char * name, size_t elem_size [, size_t page_size])
+ * @fn void vector_init(vector_t * self, const char * name, uint32_t elem_size [, uint32_t page_size])
  * @brief Constructs an @em vector container object
  * @details For example,
  * @code
@@ -139,10 +139,10 @@ typedef struct vector vector_t;	//!< Alias for the @em vector class
  */
 /*! @cond */
 #define vector_init(...) STRCAT(vector_init, NARGS(__VA_ARGS__))(__VA_ARGS__)
-extern int vector_init3(vector_t *, const char *, size_t)
+extern int vector_init3(vector_t *, const char *, uint32_t)
 /*! @cond */
 __nonnull((1)) /*! @endcond */ ;
-extern int vector_init4(vector_t *, const char *, size_t, size_t)
+extern int vector_init4(vector_t *, const char *, uint32_t, uint32_t)
 /*! @cond */
 __nonnull((1)) /*! @endcond */ ;
 /*! @endcond */
@@ -184,12 +184,12 @@ __nonnull((1)) /*! @endcond */ ;
  * @throws UNEXPECTED if @em self pointer is NULL
  * @throws UNEXPECTED if vector element at @em idx is uninitialized
  */
-extern const void *vector_at(vector_t *, size_t)
+extern const void *vector_at(vector_t *, uint32_t)
 /*! @cond */
 __nonnull((1)) /*! @endcond */ ;
 
 /*!
- * @fn void vector_get(vector_t * self, size_t idx, const void * ptr, size_t count=1)
+ * @fn void vector_get(vector_t * self, uint32_t idx, const void * ptr, uint32_t count=1)
  * @brief Copy content from the @em vector
  * @details Copies @em elem_num element(s) starting at position @em elem_off in the source @em vector to destination pointer @em ptr
  * @note If the fourth parameter is omitted, it defaults to 1
@@ -212,16 +212,16 @@ __nonnull((1)) /*! @endcond */ ;
  */
 /*! @cond */
 #define vector_get(...) STRCAT(vector_get, NARGS(__VA_ARGS__))(__VA_ARGS__)
-extern int vector_get3(vector_t *, size_t, void *)
+extern int vector_get3(vector_t *, uint32_t, void *)
 /*! @cond */
 __nonnull((1, 3)) /*! @endcond */ ;
-extern int vector_get4(vector_t *, size_t, void *, size_t)
+extern int vector_get4(vector_t *, uint32_t, void *, uint32_t)
 /*! @cond */
 __nonnull((1, 3)) /*! @endcond */ ;
 /*! @endcond */
 
 /*!
- * @fn void vector_put(vector_t * self, size_t idx, const void * ptr, size_t count=1)
+ * @fn void vector_put(vector_t * self, uint32_t idx, const void * ptr, uint32_t count=1)
  * @brief Assign new content to the @em vector
  * @details Copies @em elem_num element(s) from source pointer @em ptr to the destination @em vector starting at position @em elem_off
  * @note If the fourth parameter is omitted, it defaults to 1
@@ -244,16 +244,16 @@ __nonnull((1, 3)) /*! @endcond */ ;
  */
 /*! @cond */
 #define vector_put(...) STRCAT(vector_put, NARGS(__VA_ARGS__))(__VA_ARGS__)
-extern int vector_put3(vector_t *, size_t, const void *)
+extern int vector_put3(vector_t *, uint32_t, const void *)
 /*! @cond */
 __nonnull((1, 3)) /*! @endcond */ ;
-extern int vector_put4(vector_t *, size_t, const void *, size_t)
+extern int vector_put4(vector_t *, uint32_t, const void *, uint32_t)
 /*! @cond */
 __nonnull((1, 3)) /*! @endcond */ ;
 /*! @endcond */
 
 /*!
- * @fn size_t vector_size(vector_t * self, size_t size = 1)
+ * @fn uint32_t vector_size(vector_t * self, uint32_t size = 1)
  * @brief Return or set the size of the @em vector
  * @details Return or set the number of allocated elements in the @em vector
  * @details For example,
@@ -272,10 +272,10 @@ __nonnull((1, 3)) /*! @endcond */ ;
  */
 /*! @cond */
 #define vector_size(...) STRCAT(vector_size, NARGS(__VA_ARGS__))(__VA_ARGS__)
-extern size_t vector_size1(vector_t *)
+extern uint32_t vector_size1(vector_t *)
 /*! @cond */
 __nonnull((1)) /*! @endcond */ ;
-extern int vector_size2(vector_t *, size_t)
+extern int vector_size2(vector_t *, uint32_t)
 /*! @cond */
 __nonnull((1)) /*! @endcond */ ;
 /*! @endcond */
@@ -297,7 +297,7 @@ __nonnull((1)) /*! @endcond */ ;
  * @return The number of pages that conform the vector's content
  * @throws UNEXPECTED if @em self pointer is NULL
  */
-extern size_t vector_pages(vector_t *)
+extern uint32_t vector_pages(vector_t *)
 /*! @cond */
 __nonnull((1)) /*! @endcond */ ;
 
@@ -318,11 +318,11 @@ __nonnull((1)) /*! @endcond */ ;
  * @return The number of total elements that conform the vector's content
  * @throws UNEXPECTED if @em self pointer is NULL
  */
-extern size_t vector_capacity(vector_t *)
+extern uint32_t vector_capacity(vector_t *)
 /*! @cond */
 __nonnull((1)) /*! @endcond */ ;
 
-extern size_t vector_elem_size(vector_t *)
+extern uint32_t vector_elem_size(vector_t *)
 /*! @cond */
 __nonnull((1)) /*! @endcond */ ;
 

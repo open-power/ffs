@@ -43,7 +43,7 @@ typedef int (*compare_f) (const void *, const void *);
  */
 static inline int default_compare(const void *v1, const void *v2)
 {
-	const int i1 = (const int)v1, i2 = (const int)v2;
+	const int i1 = (const long)v1, i2 = (const long)v2;
 	return i1 - i2;
 }
 

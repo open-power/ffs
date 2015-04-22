@@ -74,7 +74,7 @@ int command_delete(args_t * args)
 			return -1;
 
 		if (args->verbose == f_VERBOSE)
-			printf("%llx: %s: delete\n", poffset, args->name);
+			printf("%llx: %s: delete\n", (long long)poffset, args->name);
 
 		return 0;
 	}

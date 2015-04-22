@@ -130,7 +130,7 @@ int parse_offset(const char *str, off_t *offset)
 	return 0;
 }
 
-int parse_size(const char *str, size_t *size)
+int parse_size(const char *str, uint32_t *size)
 {
 	assert(size != NULL);
 
@@ -167,7 +167,7 @@ int parse_size(const char *str, size_t *size)
 	return 0;
 }
 
-int parse_number(const char *str, size_t *num)
+int parse_number(const char *str, uint32_t *num)
 {
 	assert(num != NULL);
 
@@ -208,7 +208,7 @@ int parse_path(const char * path, char ** type, char ** target, char ** name)
 			return -1;
 		}
 	} else if (delim1 == delim2) {		// <target>:<name>
-		if (asprintf(target, "%.*s", delim1 - path, path) < 0) {
+		if (asprintf(target, "%.*s", (uint32_t)(delim1 - path), path) < 0) {
 			ERRNO(errno);
 			return -1;
 		}
@@ -224,12 +224,12 @@ int parse_path(const char * path, char ** type, char ** target, char ** name)
 			*name = NULL;
 		}
 	} else if (delim1 != delim2) {		// <type>:<target>:<name>
-		if (asprintf(type, "%.*s", delim1 - path, path) < 0) {
+		if (asprintf(type, "%.*s", (uint32_t)(delim1 - path), path) < 0) {
 			ERRNO(errno);
 			return -1;
 		}
 		delim1++;
-		if (asprintf(target, "%.*s", delim2 - delim1, delim1) < 0) {
+		if (asprintf(target, "%.*s", (uint32_t)(delim2 - delim1), delim1) < 0) {
 			ERRNO(errno);
 			return -1;
 		}
@@ -283,15 +283,15 @@ int check_file(const char * path, FILE * file, off_t offset) {
 		return 0;
 	case FFS_CHECK_HEADER_MAGIC:
 		UNEXPECTED("'%s' no partition table found at offset '%llx'\n",
-			   path, offset);
+			   path, (long long)offset);
 		return -1;
 	case FFS_CHECK_HEADER_CHECKSUM:
 		UNEXPECTED("'%s' partition table at offset '%llx', is "
-			   "corrupted\n", path, offset);
+			   "corrupted\n", path, (long long)offset);
 		return -1;
 	case FFS_CHECK_ENTRY_CHECKSUM:
 		UNEXPECTED("'%s' partition table at offset '%llx', has "
-			   "corrupted entries\n", path, offset);
+			   "corrupted entries\n", path, (long long)offset);
 		return -1;
 	default:
 		return -1;
@@ -501,7 +501,7 @@ FILE *__fopen(const char * type, const char * target, const char * mode,
 	assert(mode != NULL);
 
 	FILE *file = NULL;
-	size_t port = 0;
+	uint32_t port = 0;
 
 	if (type == NULL)
 		type = TYPE_FILE;
@@ -548,11 +548,11 @@ int fcp_read_entry(ffs_t * src, const char * name, FILE * out)
 	assert(src != NULL);
 	assert(name != NULL);
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(src, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	size_t buffer_count;
+	uint32_t buffer_count;
 	if (__ffs_info(src, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
 		return -1;
 
@@ -574,8 +574,8 @@ int fcp_read_entry(ffs_t * src, const char * name, FILE * out)
 	if (__ffs_info(src, FFS_INFO_OFFSET, &poffset) < 0)
 		return -1;
 
-	size_t total = 0;
-	size_t size = entry.actual;
+	uint32_t total = 0;
+	uint32_t size = entry.actual;
 	off_t offset = 0;
 
 	if (isatty(fileno(stderr))) {
@@ -618,11 +618,11 @@ int fcp_write_entry(ffs_t * dst, const char * name, FILE * in)
 	assert(dst != NULL);
 	assert(name != NULL);
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(dst, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	size_t buffer_count;
+	uint32_t buffer_count;
 	if (__ffs_info(dst, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
 		return -1;
 
@@ -644,8 +644,8 @@ int fcp_write_entry(ffs_t * dst, const char * name, FILE * in)
 	if (__ffs_info(dst, FFS_INFO_OFFSET, &poffset) < 0)
 		return -1;
 
-	size_t total = 0;
-	size_t size = entry.actual;
+	uint32_t total = 0;
+	uint32_t size = entry.actual;
 	off_t offset = 0;
 
 	if (isatty(fileno(stderr))) {
@@ -694,11 +694,11 @@ int fcp_erase_entry(ffs_t * dst, const char * name, char fill)
 	assert(dst != NULL);
 	assert(name != NULL);
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(dst, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	size_t buffer_count;
+	uint32_t buffer_count;
 	if (__ffs_info(dst, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
 		return -1;
 
@@ -722,8 +722,8 @@ int fcp_erase_entry(ffs_t * dst, const char * name, char fill)
 	if (__ffs_info(dst, FFS_INFO_OFFSET, &poffset) < 0)
 		return -1;
 
-	size_t total = 0;
-	size_t size = entry.size * block_size;
+	uint32_t total = 0;
+	uint32_t size = entry.size * block_size;
 	off_t offset = 0;
 
 	if (isatty(fileno(stderr))) {
@@ -771,11 +771,11 @@ int fcp_copy_entry(ffs_t * src, const char * src_name,
 	assert(dst != NULL);
 	assert(dst_name != NULL);
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(src, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	size_t buffer_count;
+	uint32_t buffer_count;
 	if (__ffs_info(dst, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
 		return -1;
 
@@ -800,13 +800,13 @@ int fcp_copy_entry(ffs_t * src, const char * src_name,
 		return -1;
 	}
 
-	size_t total = 0;
-	size_t size = src_entry.actual;
+	uint32_t total = 0;
+	uint32_t size = src_entry.actual;
 	off_t offset = 0;
 
 	if (isatty(fileno(stderr))) {
 		fprintf(stderr, "%8llx: %s: copy partition %8x/%8x",
-			src->offset, dst_name, src_entry.actual, total);
+			(long long)src->offset, dst_name, src_entry.actual, total);
 	}
 
 	while (0 < size) {
@@ -829,7 +829,7 @@ int fcp_copy_entry(ffs_t * src, const char * src_name,
 
 		if (isatty(fileno(stderr))) {
 			fprintf(stderr, "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-			fprintf(stderr, "%8x/%8x", src_entry.actual, total);
+			fprintf(stderr, "%8x/%8x", (uint32_t)src_entry.actual, total);
 		}
 	}
 
@@ -848,11 +848,11 @@ int fcp_compare_entry(ffs_t * src, const char * src_name,
 	assert(dst != NULL);
 	assert(dst_name != NULL);
 
-	size_t block_size;
+	uint32_t block_size;
 	if (__ffs_info(src, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	size_t buffer_count;
+	uint32_t buffer_count;
 	if (__ffs_info(dst, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
 		return -1;
 
@@ -883,13 +883,13 @@ int fcp_compare_entry(ffs_t * src, const char * src_name,
 		return -1;
 	}
 
-	size_t total = 0;
-	size_t size = src_entry.actual;
+	uint32_t total = 0;
+	uint32_t size = src_entry.actual;
 	off_t offset = 0;
 
 	if (isatty(fileno(stderr))) {
 		fprintf(stderr, "%8llx: %s: compare partition %8x/%8x",
-			src->offset, dst_name, src_entry.actual, total);
+			(long long)src->offset, dst_name, src_entry.actual, total);
 	}
 
 	while (0 < size) {
@@ -913,7 +913,7 @@ int fcp_compare_entry(ffs_t * src, const char * src_name,
 			if (memcmp(src_ptr, dst_ptr, cmp_sz) != 0) {
 				UNEXPECTED("MISCOMPARE! '%s' != '%s' at "
 					   "offset '%llx'\n", src_name,
-					   dst_name, offset + cnt);
+					   dst_name, (long long)offset + cnt);
 
 				if (isatty(fileno(stderr)))
 					fprintf(stderr, " <== [ERROR]\n");

@@ -96,7 +96,7 @@ int command_user(args_t * args)
 		if (entry->flags & FFS_FLAGS_PROTECTED &&
 		    args->force != f_FORCE) {
 			printf("%llx: %s: protected, skipping user[%d]\n",
-			       __poffset, full_name, user);
+			       (long long)__poffset, full_name, user);
 			return 0;
 		}
 
@@ -111,14 +111,14 @@ int command_user(args_t * args)
 				return -1;
 
 			if (args->verbose == f_VERBOSE)
-				printf("%llx: %s: user[%d] = '%x'\n", __poffset,
+				printf("%llx: %s: user[%d] = '%x'\n", (long long)__poffset,
 				       args->name, user, value);
 		} else {
 			if (__ffs_entry_user_get(__ffs, args->name,
 						 user, &value) < 0)
 				return -1;
 
-			printf("%llx: %s: user[%d] = '%x'\n", __poffset,
+			printf("%llx: %s: user[%d] = '%x'\n", (long long)__poffset,
 			       args->name, user, value);
 		}
 

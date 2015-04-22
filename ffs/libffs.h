@@ -138,7 +138,7 @@ extern int __ffs_entry_name(ffs_t *, ffs_entry_t *, char *, size_t)
 /*! @cond */ __nonnull ((1,2,3)) /*! @endcond */ ;
 
 extern int __ffs_entry_add(ffs_t *, const char *, off_t,
-			    size_t, ffs_type_t, uint32_t)
+			    uint32_t, ffs_type_t, uint32_t)
 /*! @cond */ __nonnull ((1,2)) /*! @endcond */ ;
 
 extern int __ffs_entry_delete(ffs_t *, const char *)

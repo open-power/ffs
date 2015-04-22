@@ -84,11 +84,11 @@ int command_trunc(args_t * args)
 		if (entry->flags & FFS_FLAGS_PROTECTED &&
 		    args->force != f_FORCE) {
 			printf("%llx: %s: protected, skipping truncate\n",
-			       __poffset, full_name);
+			       (long long)__poffset, full_name);
 			return 0;
 		}
 
-		size_t size = entry->size * __ffs->hdr->block_size;
+		uint32_t size = entry->size * __ffs->hdr->block_size;
 		if (args->size != NULL)
 			if (parse_size(args->size, &size) < 0)
 				return -1;
@@ -97,7 +97,7 @@ int command_trunc(args_t * args)
 			return -1;
 
 		if (args->verbose == f_VERBOSE)
-			printf("%llx: %s: truncate size '%x'\n", __poffset,
+			printf("%llx: %s: truncate size '%x'\n", (long long)__poffset,
 			       full_name, size);
 
 		return 0;

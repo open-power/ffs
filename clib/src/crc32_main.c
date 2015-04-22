@@ -65,7 +65,7 @@ int main(int argc, const char *argv[])
 	void *in_buf = mmap(NULL, filesize, PROT_READ, MAP_PRIVATE, fd, 0);
 	if (in_buf == MAP_FAILED) {
 		/* FIXME could still try to use read().... */
-		printf("mmap %d failed: %s\n", filesize, strerror(errno));
+		printf("mmap %d failed: %s\n", (uint32_t)filesize, strerror(errno));
 		return 1;
 	}
 

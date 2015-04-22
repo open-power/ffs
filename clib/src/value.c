@@ -74,7 +74,7 @@ void value_dump(const value_t * self, FILE * out)
 		break;
 	case VT_I64:
 		fprintf(out, "value: [ data: %lld size: %d type: %s ] %p\n",
-			self->i64, self->size, type_name[self->type], self);
+			(long long)self->i64, self->size, type_name[self->type], self);
 		break;
 	case VT_U8:
 		fprintf(out, "value: [ data: %ud size: %d type: %s ] %p\n",
@@ -90,7 +90,7 @@ void value_dump(const value_t * self, FILE * out)
 		break;
 	case VT_U64:
 		fprintf(out, "value: [ data: %lld size: %d type: %s ] %p\n",
-			self->u64, self->size, type_name[self->type], self);
+			(long long)self->u64, self->size, type_name[self->type], self);
 		break;
 	case VT_REAL32:
 		fprintf(out, "value: [ data: %f size: %d type: %s ] %p\n",
@@ -112,7 +112,7 @@ void value_dump(const value_t * self, FILE * out)
 		break;
 	case VT_STR_OFF:
 		fprintf(out, "value: [ data: %llu size: %d type: %s ] %p\n",
-			self->u64, self->size, type_name[self->type], self);
+			(long long)self->u64, self->size, type_name[self->type], self);
 		break;
 	case VT_STR_CONST:
 		fprintf(out, "value: [ data: '%s' size: %d type: %s ] %p\n",
@@ -133,7 +133,7 @@ void value_dump(const value_t * self, FILE * out)
 		break;
 	case VT_BLOB_OFF:
 		fprintf(out, "value: [ data: %llu size: %d type: %s ] %p\n",
-			self->u64, self->size, type_name[self->type], self);
+			(long long)self->u64, self->size, type_name[self->type], self);
 		break;
 	case VT_BLOB_FILE:
 		fprintf(out, "value: [ data: '%s' size: %d type: %s ] %p\n",

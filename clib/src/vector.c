@@ -83,21 +83,21 @@ struct vector_node {
 
 #define __index_to_page_hashed(i,s)                             \
 ({                                                              \
-    typeof(i) _h = int32_hash1(__index_to_page((i),(s)));       \
+    typeof(i) _h = int64_hash1(__index_to_page((i),(s)));       \
     _h;                                                         \
 })
 /*! @endcond */
 
 /* ======================================================================= */
 
-static vector_node_t *__vector_find_page(vector_t * self, size_t idx)
+static vector_node_t *__vector_find_page(vector_t * self, uint64_t idx)
 {
 	const void *hash;
 	hash = (const void *)__index_to_page_hashed(idx, self->hdr.elem_num);
 
 	tree_node_t *node = tree_find(&self->tree, hash);
 	if (unlikely(node == NULL)) {
-		UNEXPECTED("'%d' index out of range", idx);
+		UNEXPECTED("'%ld' index out of range", idx);
 		return NULL;
 	}
 
@@ -140,9 +140,9 @@ static vector_node_t *__vector_grow(vector_t * self)
 	node->magic[2] = VECTOR_NODE_MAGIC[2];
 	node->magic[3] = VECTOR_NODE_MAGIC[3];
 
-	node->address = (uint32_t) node;
+	node->address = (ulong) node;
 
-	size_t hash = __index_to_page_hashed(vector_capacity(self),
+	uint64_t hash = __index_to_page_hashed(vector_capacity(self),
 					     self->hdr.elem_num);
 
 	tree_node_init(&node->node, (const void *)hash);
@@ -162,15 +162,15 @@ static int __vector_compare(const int i1, const int i2)
 
 /* ======================================================================= */
 
-int vector_init3(vector_t * self, const char *name, size_t elem_size)
+int vector_init3(vector_t * self, const char *name, uint32_t elem_size)
 {
-	size_t page_size = max(sysconf(_SC_PAGESIZE),
+	uint32_t page_size = max(sysconf(_SC_PAGESIZE),
 			       __round_pow2(elem_size * VECTOR_PAGE_DIVISOR));
 	return vector_init4(self, name, elem_size, page_size);
 }
 
-int vector_init4(vector_t * self, const char *name, size_t elem_size,
-		 size_t page_size)
+int vector_init4(vector_t * self, const char *name, uint32_t elem_size,
+		 uint32_t page_size)
 {
 	assert(self != NULL);
 
@@ -251,7 +251,7 @@ int vector_delete(vector_t * self)
 	return 0;
 }
 
-const void *vector_at(vector_t * self, size_t idx)
+const void *vector_at(vector_t * self, uint32_t idx)
 {
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, VECTOR_MAGIC));
@@ -261,12 +261,12 @@ const void *vector_at(vector_t * self, size_t idx)
 	return node->data + (self->hdr.elem_size * (idx % self->hdr.elem_num));
 }
 
-int vector_get3(vector_t * self, size_t idx, void *ptr)
+int vector_get3(vector_t * self, uint32_t idx, void *ptr)
 {
 	return vector_get4(self, idx, ptr, 1);
 }
 
-int vector_get4(vector_t * self, size_t idx, void *ptr, size_t count)
+int vector_get4(vector_t * self, uint32_t idx, void *ptr, uint32_t count)
 {
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, VECTOR_MAGIC));
@@ -283,7 +283,7 @@ int vector_get4(vector_t * self, size_t idx, void *ptr, size_t count)
 	return 0;
 }
 
-static inline int __vector_put(vector_t * self, size_t idx, const void *ptr)
+static inline int __vector_put(vector_t * self, uint32_t idx, const void *ptr)
 {
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, VECTOR_MAGIC));
@@ -303,12 +303,12 @@ static inline int __vector_put(vector_t * self, size_t idx, const void *ptr)
 	return 0;
 }
 
-int vector_put3(vector_t * self, size_t idx, const void *ptr)
+int vector_put3(vector_t * self, uint32_t idx, const void *ptr)
 {
 	return vector_put4(self, idx, ptr, 1);
 }
 
-int vector_put4(vector_t * self, size_t idx, const void *ptr, size_t count)
+int vector_put4(vector_t * self, uint32_t idx, const void *ptr, uint32_t count)
 {
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, VECTOR_MAGIC));
@@ -327,13 +327,13 @@ int vector_put4(vector_t * self, size_t idx, const void *ptr, size_t count)
 	return 0;
 }
 
-size_t vector_size1(vector_t * self)
+uint32_t vector_size1(vector_t * self)
 {
 	assert(self != NULL);
 	return self->hdr.size;
 }
 
-int vector_size2(vector_t * self, size_t size)
+int vector_size2(vector_t * self, uint32_t size)
 {
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, VECTOR_MAGIC));
@@ -355,21 +355,21 @@ int vector_size2(vector_t * self, size_t size)
 	return self->hdr.size = size;
 }
 
-size_t vector_pages(vector_t * self)
+uint32_t vector_pages(vector_t * self)
 {
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, VECTOR_MAGIC));
 	return self->hdr.page_count;
 }
 
-size_t vector_capacity(vector_t * self)
+uint32_t vector_capacity(vector_t * self)
 {
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, VECTOR_MAGIC));
 	return self->hdr.page_count * self->hdr.elem_num;
 }
 
-size_t vector_elem_size(vector_t * self)
+uint32_t vector_elem_size(vector_t * self)
 {
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, VECTOR_MAGIC));
@@ -557,7 +557,7 @@ ssize_t vector_load(vector_t * self, FILE * in)
 			return -1;
 		}
 
-		node->address = (uint32_t) node;
+		node->address = (ulong) node;
 		tree_node_init(&node->node, node->node.key);
 		splay_insert(&self->tree, &node->node);
 
@@ -626,7 +626,7 @@ int vector_receive(vector_t * self, mqueue_t * mq)
 
 		assert(!VECTOR_NODE_MAGIC_CHECK(node->magic));
 
-		node->address = (uint32_t) node;
+		node->address = (ulong) node;
 		tree_node_init(&node->node, node->node.key);
 		splay_insert(&self->tree, &node->node);
 

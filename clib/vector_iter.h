@@ -64,7 +64,7 @@ typedef struct vector_iter vector_iter_t;	//!< Alias for the @em vector_iter cla
  */
 struct vector_iter {
 	vector_t *vector;	//!< Reference to the target vector object
-	size_t idx;		//!< Current position of the iterator
+	uint32_t idx;		//!< Current position of the iterator
 	uint32_t flags;		//!< Iterator configuration flags
 };
 
