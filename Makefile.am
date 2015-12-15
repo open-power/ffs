@@ -14,7 +14,6 @@ libclib_a_SOURCES = \
 	clib/src/tree.c \
 	clib/src/tree_iter.c \
 	clib/src/value.c \
-	clib/src/mq.c \
 	clib/src/trace_indent.c \
 	clib/src/checksum.c
 
