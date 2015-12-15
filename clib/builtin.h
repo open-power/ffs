@@ -41,54 +41,6 @@
 #define	popcount(x)		__builtin_popcount((x))
 
 /*!
- * @def ctz(x)
- * @hideinitializer
- * @brief Count trailing zeros of an int
- * @param x [in] @em int value
- */
-#define	ctz(x)			__builtin_ctz((x))
-
-/*!
- * @def ctzl(x)
- * @hideinitializer
- * @brief Count trailing zeros of a long
- * @param x [in] @em long value
- */
-#define	ctzl(x)			__builtin_ctzl((x))
-
-/*!
- * @def ctzll(x)
- * @hideinitializer
- * @brief Count trailing zeros of a long long
- * @param x [in] @em long @em long value
- */
-#define	ctzll(x)		__builtin_ctzll((x))
-
-/*!
- * @def clz(x)
- * @hideinitializer
- * @brief Count leading zeros of an int
- * @param x [in] @em int value
- */
-#define	clz(x)			__builtin_clzl((x))
-
-/*!
- * @def clzl(x)
- * @hideinitializer
- * @brief Count leading zeros of a long
- * @param x [in] @em long value
- */
-#define	clzl(x)			__builtin_clzl((x))
-
-/*!
- * @def clzll(x)
- * @hideinitializer
- * @brief Count leading zeros of a long long
- * @param x [in] @em long long value
- */
-#define	clzll(x)		__builtin_clzll((x))
-
-/*!
  * @def caller(x)
  * @hideinitializer
  * @brief Return callers return address
