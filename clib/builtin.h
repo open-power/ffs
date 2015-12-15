@@ -33,15 +33,6 @@
 #define __BUILTIN_H__
 
 /*!
- * @def parity(x)
- * @hideinitializer
- * @brief Return parity of the input
- * @param x [in] Object
- */
-#define	parity(x)		__builtin_parity((x))
-#define	ffs(x)			__builtin_ffs((x))
-
-/*!
  * @def popcount(x)
  * @hideinitializer
  * @brief Return number of 0b'1' bits of an int

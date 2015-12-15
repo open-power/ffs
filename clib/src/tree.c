@@ -590,7 +590,7 @@ int splay_remove(tree_t * self, tree_node_t * node)
 		}
 #else
 		if (self->root->left != NULL && self->root->right != NULL) {
-			if (parity(int64_hash1((int64_t) self->root))) {
+			if (__builtin_parity(int64_hash1((int64_t) self->root))) {
 				x = splay(self->root->left, node->key,
 					  self->compare);
 				x->right = self->root->right;
