@@ -637,14 +637,6 @@ static int ffs_flush(ffs_t * self)
 		return -1;
 	}
 
-	if (fileno(self->file) != -1) {
-		if (fsync(fileno(self->file)) < 0) {
-			ERRNO(errno);
-			return -1;
-		}
-	}
-
-
 	self->dirty = false;
 
 	return 0;
@@ -762,10 +754,6 @@ int __ffs_fsync(ffs_t * self)
 		ERRNO(errno);
 		return -1;
 	}
-
-	if (fileno(self->file) != -1)
-		if (fsync(fileno(self->file)) < 0)
-			return -1;
 
 	return 0;
 }
