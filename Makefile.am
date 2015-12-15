@@ -1,4 +1,4 @@
-AM_CFLAGS = -Iclib/ -std=gnu99 -D_GNU_SOURCE -Iffs/  -fshort-enums -fPIC -D_FILE_OFFSET_BITS=64
+AM_CFLAGS = -I${srcdir}/clib/ -std=gnu99 -D_GNU_SOURCE -I${srcdir}/ffs/  -fshort-enums -fPIC -D_FILE_OFFSET_BITS=64
 AM_LDFLAGS = -L. -fPIC -Wl,-whole-archive  -Wl,-no-whole-archive
 
 bin_PROGRAMS = ecc/ecc fpart/fpart fcp/fcp
@@ -46,6 +46,43 @@ fcp_fcp_SOURCES = \
 	fcp/src/main.c
 fcp_fcp_LDADD = libffs.a libclib.a
 
-bin_SCRIPTS = fpart/fpart.sh
+EXTRA_DIST = fpart/fpart.sh LICENSE NOTICE
 
-doc_DATA = LICENSE NOTICE
+noinst_HEADERS = \
+./clib/align.h \
+./clib/attribute.h \
+./clib/bb_trace.h \
+./clib/checksum.h \
+./clib/compare.h \
+./clib/cunit/ecc.h \
+./clib/cunit/splay.h \
+./clib/cunit/tree.h \
+./clib/ecc.h \
+./clib/err.h \
+./clib/hash.h \
+./clib/ident.h \
+./clib/libclib.h \
+./clib/list.h \
+./clib/list_iter.h \
+./clib/max.h \
+./clib/min.h \
+./clib/misc.h \
+./clib/nargs.h \
+./clib/raii.h \
+./clib/trace_indent.h \
+./clib/tree_iter.h \
+./clib/type.h \
+./clib/value.h \
+./clib/version.h \
+./clib/builtin.h \
+./clib/queue.h \
+./clib/tree.h \
+./ecc/src/main.h \
+./fcp/src/main.h \
+./fcp/src/misc.h \
+./ffs/ffs.h \
+./ffs/libffs2.h \
+./ffs/src/ffs-fsp.h \
+./ffs/test/test_libffs.h \
+./ffs/libffs.h \
+./fpart/src/main.h
