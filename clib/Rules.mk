@@ -34,7 +34,6 @@ OBJS =	err.o crc32.o misc.o ecc.o	\
 	list.o list_iter.o		\
 	tree.o tree_iter.o		\
 	vector.o vector_iter.o		\
-	table.o table_iter.o 		\
 	value.o mq.o	 	\
 	memory_leak_detection.o		\
 	trace_indent.o checksum.o
