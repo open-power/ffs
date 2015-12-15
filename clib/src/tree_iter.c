@@ -42,7 +42,6 @@
 #include <limits.h>
 
 #include "libclib.h"
-#include "vector.h"
 #include "tree_iter.h"
 
 /* ======================================================================= */
