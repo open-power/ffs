@@ -50,9 +50,6 @@ libclib.so: $(OBJS)
 libclib.a: $(OBJS)
 	$(AR) -r $@ $^
 
-db.o: db.c db.h
-	$(CC) $(CFLAGS) -DSQLITE3 -c $^
-
 crc32: crc32.c crc32_main.c
 	$(CC) $(CFLAGS) -o $@ $^
 
