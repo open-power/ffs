@@ -50,7 +50,6 @@
 #include "tree.h"
 #include "tree_iter.h"
 #include "bb_trace.h"
-#include "memory_leak_detection.h"
 
 /*! @cond */
 #define ARRAY_ELEM_SIZE_MIN	1

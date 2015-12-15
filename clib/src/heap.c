@@ -37,7 +37,6 @@
 #include "slab.h"
 #include "heap.h"
 #include "bb_trace.h"
-#include "memory_leak_detection.h"
 
 /* ======================================================================= */
 

@@ -27,7 +27,6 @@
 #include <stdio.h>
 
 #include <clib/exception.h>
-#include <clib/memory_leak_detection.h>
 
 #define EXCEPTION_FOO   1
 #define EXCEPTION_BAR   2
