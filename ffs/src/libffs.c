@@ -487,6 +487,10 @@ ffs_t *__ffs_fcreate(FILE *file, off_t offset, uint32_t block_size,
 	self->hdr->block_size = block_size;
 	self->hdr->block_count = block_count;
 	self->hdr->checksum = 0;
+	self->hdr->resvd[0] = 0;
+	self->hdr->resvd[1] = 0;
+	self->hdr->resvd[2] = 0;
+	self->hdr->resvd[3] = 0;
 
 	size_t size = self->count * self->hdr->entry_size;
 
