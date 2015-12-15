@@ -69,7 +69,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "exception.h"
 #include "builtin.h"
 #include "compare.h"
 #include "type.h"

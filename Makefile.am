@@ -9,7 +9,6 @@ libclib_a_SOURCES = \
 	clib/src/err.c \
 	clib/src/misc.c \
 	clib/src/ecc.c \
-	clib/src/exception.c \
 	clib/src/list.c \
 	clib/src/list_iter.c \
 	clib/src/tree.c \
@@ -22,9 +21,9 @@ libclib_a_SOURCES = \
 libffs_a_SOURCES = ffs/src/libffs.c ffs/src/libffs2.c
 
 ecc_ecc_SOURCES = ecc/src/main.c
-ecc_ecc_LDADD = libffs.a libclib.a -lpthread
+ecc_ecc_LDADD = libffs.a libclib.a
 
-fpart_fpart_LDADD = libffs.a libclib.a -lpthread
+fpart_fpart_LDADD = libffs.a libclib.a
 fpart_fpart_SOURCES = \
 	fpart/src/cmd_create.c \
 	fpart/src/cmd_add.c \
@@ -46,7 +45,7 @@ fcp_fcp_SOURCES = \
 	fcp/src/cmd_list.c \
 	fcp/src/cmd_trunc.c \
 	fcp/src/main.c
-fcp_fcp_LDADD = libffs.a libclib.a -lpthread
+fcp_fcp_LDADD = libffs.a libclib.a
 
 bin_SCRIPTS = fpart/fpart.sh
 

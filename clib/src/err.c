@@ -44,7 +44,7 @@
 
 #include "err.h"
 
-static pthread_key_t __err_key = 0;
+static list_t *__err_key = 0;
 
 static const char *__err_type_name[] = {
 	[ERR_NONE] = "none",
@@ -68,7 +68,7 @@ void err_delete(err_t * self)
 
 err_t *err_get(void)
 {
-	list_t *list = (list_t *) pthread_getspecific(__err_key);
+	list_t *list = __err_key;
 
 	err_t *self = NULL;
 
@@ -77,7 +77,7 @@ err_t *err_get(void)
 
 		if (list_empty(list)) {
 			free(list), list = NULL;
-			assert(pthread_setspecific(__err_key, list) == 0);
+			__err_key = list;
 		}
 	}
 
@@ -88,13 +88,13 @@ void err_put(err_t * self)
 {
 	assert(self != NULL);
 
-	list_t *list = pthread_getspecific(__err_key);
+	list_t *list = __err_key;
 	if (list == NULL) {
 		list = (list_t *) malloc(sizeof(*list));
 		assert(list != NULL);
 
 		list_init(list);
-		assert(pthread_setspecific(__err_key, list) == 0);
+		__err_key = list;
 	}
 
 	list_add_head(list, &self->node);
@@ -207,9 +207,3 @@ const char *err_type_name(err_t * self)
 	return __err_type_name[self->type];
 }
 
-/* =======================================================================*/
-
-__constructor static void __err__ctor__(void)
-{
-	assert(pthread_key_create(&__err_key, NULL) == 0);
-}

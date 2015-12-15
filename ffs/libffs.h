@@ -29,7 +29,6 @@
 #include <stdbool.h>
 #include <stdarg.h>
 
-#include <clib/exception.h>
 
 #include "ffs.h"
 

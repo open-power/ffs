@@ -48,7 +48,6 @@
 
 #include "libffs.h"
 
-#include <clib/assert.h>
 #include <clib/builtin.h>
 #include <clib/checksum.h>
 #include <clib/misc.h>

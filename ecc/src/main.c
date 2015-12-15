@@ -45,7 +45,6 @@
 #include <ctype.h>
 
 #include <clib/attribute.h>
-#include <clib/assert.h>
 #include <clib/misc.h>
 #include <clib/min.h>
 #include <clib/ecc.h>

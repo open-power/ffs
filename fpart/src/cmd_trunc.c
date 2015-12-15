@@ -45,7 +45,6 @@
 #include <ctype.h>
 #include <regex.h>
 
-#include <clib/assert.h>
 #include <clib/list.h>
 #include <clib/list_iter.h>
 #include <clib/misc.h>
