@@ -43,7 +43,6 @@ typedef list_node queue_node;
 #define queue_init(q)		list_init((list *)(q))
 #define queue_push(q,n)		list_add_tail((list *)(q),(n))
 #define queue_pop(q)		list_remove_head((list *)(q))
-#define stack_empty(q)		list_empty((list *)(q))
 #define queue_dump(q,s)		list_dump((list *)(q),(s))
 
 #define queue_entry(n, t, m)	list_entry((n),(t),(m))
