@@ -2,4 +2,5 @@ language: c
 
 script:
     - make
+    - PATH=./fpart/x86/:./fcp/x86/:./ffs/x86:$PATH ./fpart/fpart.sh 
 
