@@ -28,7 +28,7 @@ CFLAGS += -iquote$(DEPTH) -fPIC
 LDFLAGS=-L.
 
 OBJS =	err.o crc32.o misc.o ecc.o	\
-	exception.o slab.o		\
+	exception.o \
 	list.o list_iter.o		\
 	tree.o tree_iter.o		\
 	value.o mq.o	 	\
