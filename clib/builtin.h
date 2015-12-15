@@ -33,22 +33,6 @@
 #define __BUILTIN_H__
 
 /*!
- * @def likely(x)
- * @hideinitializer
- * @brief Indicate an expression is likely to occur
- * @param x [in] Expression
- */
-#define likely(x)		__builtin_expect(!!(x), 1)
-
-/*!
- * @def unlikely(x)
- * @hideinitializer
- * @brief Indicate an expression is unlikely to occur
- * @param x [in] Expression
- */
-#define unlikely(x)		__builtin_expect(!!(x), 0)
-
-/*!
  * @def parity(x)
  * @hideinitializer
  * @brief Return parity of the input

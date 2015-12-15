@@ -127,7 +127,7 @@ int slab_init5(slab_t * self, const char *name, uint32_t alloc_size,
 {
 	assert(self != NULL);
 
-	if (unlikely(MAGIC_CHECK(self->hdr.id, SLAB_MAGIC) == false))
+	if (MAGIC_CHECK(self->hdr.id, SLAB_MAGIC) == false)
 		slab_delete(self);
 
 	alloc_size = align(alloc_size, sizeof(void *));
@@ -189,10 +189,10 @@ int slab_init5(slab_t * self, const char *name, uint32_t alloc_size,
 
 int slab_delete(slab_t * self)
 {
-	if (unlikely(self == NULL))
+	if (self == NULL)
 		return 0;
 
-	if (unlikely(MAGIC_CHECK(self->hdr.id, SLAB_MAGIC))) {
+	if (MAGIC_CHECK(self->hdr.id, SLAB_MAGIC)) {
 		UNEXPECTED("'%s' invalid or corrupt slab object",
 			   self->hdr.name);
 		return -1;
@@ -234,7 +234,7 @@ void *slab_alloc(slab_t * self)
 	    if (0 < node->free)
 		break;
 
-	if (unlikely(tree_iter_elem(&it) == NULL))
+	if (tree_iter_elem(&it) == NULL)
 		node = __slab_grow(self);
 
 	assert(node != NULL);
@@ -247,11 +247,11 @@ void *slab_alloc(slab_t * self)
 		if (node->bitmap[map_pos] != UINT32_MAX)
 			break;
 
-	if (unlikely(node->bitmap[map_pos] == UINT32_MAX)) {
+	if (node->bitmap[map_pos] == UINT32_MAX) {
 		UNEXPECTED("'%s' cache is corrupted", self->hdr.name);
 		return NULL;
 	}
-	if (unlikely(self->hdr.bitmap_size <= map_pos)) {
+	if (self->hdr.bitmap_size <= map_pos) {
 		UNEXPECTED("'%s' cache is corrupted", self->hdr.name);
 		return NULL;
 	}
@@ -259,7 +259,7 @@ void *slab_alloc(slab_t * self)
 	uint32_t bit = clzl(~node->bitmap[map_pos]);
 	uint32_t mask = 0x80000000 >> bit;
 
-	if (unlikely((node->bitmap[map_pos] & mask) == mask)) {
+	if ((node->bitmap[map_pos] & mask) == mask) {
 		UNEXPECTED("'%s' cache is corrupted", self->hdr.name);
 		return NULL;
 	}
@@ -278,14 +278,14 @@ int slab_free(slab_t * self, void *ptr)
 	assert(self != NULL);
 	assert(!MAGIC_CHECK(self->hdr.id, SLAB_MAGIC));
 
-	if (unlikely(ptr == NULL))
+	if (ptr == NULL)
 		return 0;
 
 	slab_node_t *node = (slab_node_t *) ((uintptr_t) ptr &
 					     ~(self->hdr.page_size - 1));
 	assert(node != NULL);
 
-	if (unlikely(SLAB_NODE_MAGIC_CHECK(node->magic))) {
+	if (SLAB_NODE_MAGIC_CHECK(node->magic)) {
 		int64_t hash = int64_hash1((int64_t) node);
 		if (splay_find(&self->tree, (const void *)hash) == NULL) {
 			UNEXPECTED("'%s' invalid slab_node pointer, %p",
@@ -297,7 +297,7 @@ int slab_free(slab_t * self, void *ptr)
 	void *data = (void *)node->bitmap + self->hdr.bitmap_size;
 	assert(data != NULL);
 
-	if (unlikely(ptr < data)) {
+	if (ptr < data) {
 		UNEXPECTED("'%s' pointer out-of-range, %p",
 			   self->hdr.name, ptr);
 		return -1;
@@ -307,7 +307,7 @@ int slab_free(slab_t * self, void *ptr)
 	uint32_t mask = 0x80000000 >> slot;
 	size_t map_pos = slot / INT32_BIT;
 
-	if (unlikely((node->bitmap[map_pos] & mask) != mask)) {
+	if ((node->bitmap[map_pos] & mask) != mask) {
 		UNEXPECTED("'%s' double free detected, %p",
 			   self->hdr.name, ptr);
 		return -1;
@@ -362,7 +362,7 @@ void slab_dump(slab_t * self, FILE * out)
 		out = stdout;
 
 	if (self != NULL) {
-		if (unlikely(MAGIC_CHECK(self->hdr.id, SLAB_MAGIC))) {
+		if (MAGIC_CHECK(self->hdr.id, SLAB_MAGIC)) {
 			UNEXPECTED("'%s' invalid or corrupt slab object",
 				   self->hdr.name);
 			return;

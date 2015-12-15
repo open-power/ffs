@@ -268,7 +268,7 @@ static int __entries_read(ffs_hdr_t * hdr, FILE * file, off_t offset)
 #if 0
 static void __entries_write(ffs_hdr_t * hdr, FILE * file, off_t offset)
 {
-	if (unlikely(hdr == NULL))
+	if (hdr == NULL)
 		ffs_throw(UNEX, 10400, "NULL hdr pointer");
 	if (hdr->magic != FFS_MAGIC)
 		ffs_throw(UNEX, 10401, "magic number mismatch '%x' != "
@@ -740,7 +740,7 @@ int __ffs_fclose(ffs_t * self)
 
 int __ffs_close(ffs_t * self)
 {
-	if (unlikely(self == NULL))
+	if (self == NULL)
 		return 0;
 
 	if (self->dirty == true)
@@ -1325,7 +1325,7 @@ ssize_t __ffs_entry_copy(ffs_t *self, ffs_t *in, const char *path)
 	assert(in != NULL);
 	assert(path != NULL);
 
-	if (unlikely(*path == '\0'))
+	if (*path == '\0')
 		return 0;
 
 	ffs_entry_t *src = __find_entry(in->hdr, path);
@@ -1405,7 +1405,7 @@ ssize_t __ffs_entry_compare(ffs_t * self, ffs_t * in, const char *path)
 	assert(in != NULL);
 	assert(path != NULL);
 
-	if (unlikely(*path == '\0'))
+	if (*path == '\0')
 		return 0;
 
 	ffs_entry_t *src = __find_entry(in->hdr, path);

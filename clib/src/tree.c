@@ -136,9 +136,9 @@ __tree_new_root(tree_t * self, tree_node_t * node, tree_node_t * left,
 	node->right = right;
 	node->parent = NULL;
 
-	if (unlikely(right != NULL))
+	if (right != NULL)
 		right->parent = node;
-	if (unlikely(left != NULL))
+	if (left != NULL)
 		left->parent = node;
 
 	self->root = node;
@@ -152,7 +152,7 @@ int tree_insert(tree_t * self, tree_node_t * node)
 	__tree_new_min(self, node);
 	__tree_new_max(self, node);
 
-	if (unlikely(self->root == NULL)) {
+	if (self->root == NULL) {
 		__tree_new_root(self, node, NULL, NULL);
 		self->size++;
 	} else {
@@ -223,7 +223,7 @@ int tree_remove(tree_t * self, tree_node_t * node)
 	assert(self != NULL);
 	assert(node != NULL);
 
-	if (unlikely(self->root == NULL) || unlikely(node == NULL))
+	if (self->root == NULL || node == NULL)
 		return 0;
 
 	/* =========================== */
@@ -365,7 +365,7 @@ int tree_walk(tree_t * self, tree_walk_f walk_func)
 	int __tree_walk(tree_node_t * root) {
 		int rc = 0;
 
-		if (likely(root != NULL)) {
+		if (root != NULL) {
 			__tree_walk(root->left);
 			rc = walk_func(root);
 			__tree_walk(root->right);
@@ -406,7 +406,7 @@ void tree_node_dump(tree_node_t * node, FILE * out)
 		return;
 
 	void __tree_node_dump(tree_node_t * root, int level) {
-		if (likely(root != NULL)) {
+		if (root != NULL) {
 			if (0 < level) {
 				for (int i = 0; i < level; i++)
 					fprintf(out, "  ");
@@ -528,7 +528,7 @@ int splay_insert(tree_t * self, tree_node_t * node)
 	__tree_new_min(self, node);
 	__tree_new_max(self, node);
 
-	if (unlikely(self->root == NULL)) {
+	if (self->root == NULL) {
 		node->left = node->right = node->parent = NULL;
 		self->root = node;
 		self->size = 1;
@@ -569,7 +569,7 @@ int splay_remove(tree_t * self, tree_node_t * node)
 	assert(self != NULL);
 	assert(node != NULL);
 
-	if (unlikely(self->root == NULL) || unlikely(node == NULL))
+	if (self->root == NULL || node == NULL)
 		return 0;
 
 	if (node == self->min)
