@@ -38,7 +38,7 @@ MKDIR=mkdir
 GREP=grep
 HEAD=head
 HEX=hexdump
-CRC=crc32
+CRC=sha1sum
 DD=dd
 DIFF=diff
 
@@ -92,7 +92,7 @@ function size()
 
 function crc()
 {
-	local crc=$(${CRC} ${2})
+	local crc=$(${CRC} ${2}|cut -f 1 -d ' ')
 	if [[ ${1} == ${crc} ]]; then
 		echo "[PASSED] crc: '${2}' ===> expect=${1}, actual=${crc}"
 	else

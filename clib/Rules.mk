@@ -27,7 +27,7 @@ CFLAGS += -iquote$(DEPTH) -fPIC
 
 LDFLAGS=-L.
 
-OBJS =	err.o crc32.o misc.o ecc.o	\
+OBJS =	err.o misc.o ecc.o	\
 	exception.o \
 	list.o list_iter.o		\
 	tree.o tree_iter.o		\
@@ -35,7 +35,7 @@ OBJS =	err.o crc32.o misc.o ecc.o	\
 	trace_indent.o checksum.o
 
 
-TARGETS=libclib.so libclib.a crc32
+TARGETS=libclib.so libclib.a
 
 vpath	%.c ../src
 vpath	%.h ..
@@ -49,8 +49,6 @@ libclib.so: $(OBJS)
 libclib.a: $(OBJS)
 	$(AR) -r $@ $^
 
-crc32: crc32.c crc32_main.c
-	$(CC) $(CFLAGS) -o $@ $^
 
 clean distclean:
 	$(RM) *.so *.o *.gch  *.CKP *.lst $(TARGETS)
@@ -58,9 +56,7 @@ clean distclean:
 
 install: $(TARGETS) ../*.h
 	$(INSTALL) -d $(CLIB_INSTALL)/include/clib $(CLIB_INSTALL)/{bin,lib}
-	$(INSTALL) ../crc32.h $(CLIB_INSTALL)/include
 	$(INSTALL) ../*.h $(CLIB_INSTALL)/include/clib
 	$(INSTALL) libclib.so libclib.a $(CLIB_INSTALL)/lib
-	$(INSTALL) crc32 $(CLIB_INSTALL)/bin
 	$(MAKE) -C test $@
 	$(MAKE) -C cunit $@
