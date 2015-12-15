@@ -172,14 +172,15 @@ int create_regular_file(const char *path, size_t size, char pad)
 {
 	assert(path != NULL);
 
-	RAII(FILE*, file, fopen(path, "w"), fclose);
-	if (file == NULL) {
+	int fd = open(path, O_CREAT|O_TRUNC|O_WRONLY, S_IRUSR|S_IWUSR);
+	if (fd == -1) {
 		ERRNO(errno);
 		return -1;
 	}
 
-	if (ftruncate(fileno(file), size) < 0) {
+	if (ftruncate(fd, size) < 0) {
 		ERRNO(errno);
+		close(fd);
 		return -1;
 	}
 
@@ -188,15 +189,17 @@ int create_regular_file(const char *path, size_t size, char pad)
 	memset(buf, pad, page_size);
 
 	while (0 < size) {
-		ssize_t rc = fwrite(buf, 1, min(sizeof(buf), size), file);
-		if (rc <= 0 && ferror(file)) {
+		ssize_t rc = write(fd, buf, min(sizeof(buf), size));
+		if (rc <= 0) {
 			ERRNO(errno);
+			close(fd);
 			return -1;
 		}
 
 		size -= rc;
 	}
 
+	close(fd);
 	return 0;
 }
 
