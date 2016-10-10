@@ -126,17 +126,15 @@ static int __write(args_t * args, off_t offset, entry_list_t * done_list)
 		return -1;
 	}
 
-	if (entry.actual < st.st_size) {
-		if (__ffs_entry_truncate(ffs, full_name,
-					 st.st_size) < 0) {
-			ERRNO(errno);
-			return -1;
-		}
-
-		if (args->verbose == f_VERBOSE)
-			fprintf(stderr, "%8llx: %s: trunc size '%llx' (done)\n",
-				(long long)offset, full_name, (long long)st.st_size);
+	if (__ffs_entry_truncate(ffs, full_name,
+				 st.st_size) < 0) {
+		ERRNO(errno);
+		return -1;
 	}
+
+	if (args->verbose == f_VERBOSE)
+		fprintf(stderr, "%8llx: %s: trunc size '%llx' (done)\n",
+			(long long)offset, full_name, (long long)st.st_size);
 
 	if (entry_list_exists(done_list, &entry) == 1) {
 		if (args->verbose == f_VERBOSE)
