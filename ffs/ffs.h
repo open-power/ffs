@@ -48,6 +48,11 @@
 #define FFS_ENTRY_SIZE sizeof(struct ffs_entry)
 
 /*
+* Size of FFS_HDR w/o entry struct in bytes
+*/
+#define FFS_HDR_SIZE_NO_ENTRY 0x48
+
+/*
  * Sizes of the data structures w/o checksum
  */
 #define FFS_HDR_SIZE_CSUM   (FFS_HDR_SIZE - sizeof(uint32_t))
