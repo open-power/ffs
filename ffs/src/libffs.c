@@ -487,6 +487,10 @@ ffs_t *__ffs_fcreate(FILE *file, off_t offset, uint32_t block_size,
 	self->hdr->block_size = block_size;
 	self->hdr->block_count = block_count;
 	self->hdr->checksum = 0;
+	self->hdr->resvd[0] = 0;
+	self->hdr->resvd[1] = 0;
+	self->hdr->resvd[2] = 0;
+	self->hdr->resvd[3] = 0;
 
 	size_t size = self->count * self->hdr->entry_size;
 
@@ -637,14 +641,6 @@ static int ffs_flush(ffs_t * self)
 		return -1;
 	}
 
-	if (fileno(self->file) != -1) {
-		if (fsync(fileno(self->file)) < 0) {
-			ERRNO(errno);
-			return -1;
-		}
-	}
-
-
 	self->dirty = false;
 
 	return 0;
@@ -762,10 +758,6 @@ int __ffs_fsync(ffs_t * self)
 		ERRNO(errno);
 		return -1;
 	}
-
-	if (fileno(self->file) != -1)
-		if (fsync(fileno(self->file)) < 0)
-			return -1;
 
 	return 0;
 }
