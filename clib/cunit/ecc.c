@@ -26,8 +26,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <clib/exception.h>
-#include <clib/assert.h>
 #include <clib/type.h>
 
 #include <clib/ecc.h>

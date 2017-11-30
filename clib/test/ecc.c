@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <clib/assert.h>
 #include <clib/type.h>
 #include <clib/misc.h>
 

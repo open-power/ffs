@@ -45,7 +45,6 @@
 
 #include <clib/exception.h>
 #include <clib/attribute.h>
-#include <clib/assert.h>
 #include <clib/min.h>
 #include <sys/xattr.h>
 

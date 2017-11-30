@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <clib/assert.h>
 #include <clib/slab.h>
 #include <clib/list.h>
 #include <clib/list_iter.h>

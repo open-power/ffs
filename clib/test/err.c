@@ -30,7 +30,6 @@
 #include <string.h>
 #include <libgen.h>
 
-#include <clib/assert.h>
 #include <clib/version.h>
 #include <clib/err.h>
 
