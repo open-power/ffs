@@ -236,12 +236,15 @@ static int process_argument(args_t * args, int opt, const char *optarg)
 			args->user = strdup(optarg);
 		break;
 	case o_POFFSET:		/* partition-offset */
+		free(args->poffset);
 		args->poffset = strdup(optarg);
 		break;
 	case o_TARGET:		/* target */
+		free(args->target);
 		args->target = strdup(optarg);
 		break;
 	case o_NAME:		/* name */
+		free(args->name);
 		args->name = strdup(optarg);
 		break;
 	case o_OFFSET:		/* offset */
@@ -460,6 +463,21 @@ static int process_args(args_t * args)
 	return rc;
 }
 
+static void free_args(args_t * args)
+{
+	free(args->short_name);
+	free(args->name);
+	free(args->target);
+	free(args->offset);
+	free(args->poffset);
+	free(args->size);
+	free(args->block);
+	free(args->user);
+	free(args->value);
+	free(args->flags);
+	free(args->pad);
+}
+
 static void args_dump(args_t * args)
 {
 	assert(args != NULL);
@@ -579,6 +597,7 @@ error:
 			err_code(err), err_size(err), (char *)err_data(err));
 	}
 
+	free_args(&args);
 	return rc;
 }
 
@@ -587,8 +606,8 @@ static void __ctor__(void)
 {
 	page_size = sysconf(_SC_PAGESIZE);
 
-	args.short_name = program_invocation_short_name;
-	args.poffset = "0x3F0000,0x7F0000";
-	args.target = "/dev/mtdblock/sfc.of";
-	args.name = ".*";
+	args.short_name = strdup(program_invocation_short_name);
+	args.poffset = strdup("0x3F0000,0x7F0000");
+	args.target = strdup("/dev/mtdblock/sfc.of");
+	args.name = strdup(".*");
 }

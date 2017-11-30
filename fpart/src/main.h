@@ -76,7 +76,7 @@ typedef enum {
 } flag_t;
 
 typedef struct {
-	const char *short_name;
+	char *short_name;
 
 	/* target */
 	const char *path;
@@ -85,11 +85,11 @@ typedef struct {
 	cmd_t cmd;
 
 	/* options */
-	const char *name, *target;
-	const char *offset, *poffset;
-	const char *size, *block;
-	const char *user, *value;
-	const char *flags, *pad;
+	char *name, *target;
+	char *offset, *poffset;
+	char *size, *block;
+	char *user, *value;
+	char *flags, *pad;
 
 	/* flags */
 	flag_t force, logical;
