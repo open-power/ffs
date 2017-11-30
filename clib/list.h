@@ -78,9 +78,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "builtin.h"
-#include "assert.h"
 #include "type.h"
 
 /* ==================================================================== */
