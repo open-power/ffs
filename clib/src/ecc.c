@@ -48,7 +48,7 @@
 #include <assert.h>
 
 #include "ecc.h"
-#include "builtin.h"
+#include "clib/builtin.h"
 #include "attribute.h"
 #include "misc.h"
 

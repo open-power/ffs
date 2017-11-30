@@ -34,7 +34,7 @@
 
 #include "attribute.h"
 #include "version.h"
-#include "builtin.h"
+#include "clib/builtin.h"
 #include "assert.h"
 #include "ident.h"
 #include "nargs.h"
