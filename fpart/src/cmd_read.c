@@ -99,9 +99,6 @@ int command_read(args_t * args)
 			}
 		}
 
-		if (__ffs_buffer(ffs, block_size) < 0)
-			return -1;
-
 		RAII(void*, block, malloc(block_size), free);
 		if (block == NULL) {
 			ERRNO(errno);

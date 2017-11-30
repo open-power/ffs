@@ -91,14 +91,6 @@ static int __erase(args_t * args, off_t offset, entry_list_t * done_list)
 	if (__ffs_info(ffs, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	if (args->buffer != NULL) {
-		uint32_t buffer;
-		if (parse_size(args->buffer, &buffer) < 0)
-			return -1;
-		if (__ffs_buffer(ffs, buffer) < 0)
-			return -1;
-	}
-
 	ffs_entry_t parent;
 	if (__ffs_entry_find(ffs, name, &parent) == false) {
 		UNEXPECTED("partition entry '%s' not found\n", name);

@@ -90,7 +90,6 @@ typedef struct {
 
 	/* options */
 	const char *offset;
-	const char *buffer;
 
 	/* flags */
 	flag_t force;

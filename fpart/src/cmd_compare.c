@@ -131,11 +131,6 @@ int command_compare(args_t * args)
 			}
 		}
 
-		if (__ffs_buffer(__in, block_size) < 0)
-			return -1;
-		if (__ffs_buffer(__out, block_size) < 0)
-			return -1;
-
 		RAII(void*, src_block, malloc(block_size), free);
 		if (src_block == NULL) {
 			ERRNO(errno);

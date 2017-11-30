@@ -205,9 +205,7 @@ static void usage(bool verbose)
 	fprintf(e, "  -b, --buffer <value>\n");
 	if (verbose)
 		fprintf(e,
-			"\n  Specifies the buffer size used by --read, --write,"
-			" --copy and --compare\n  commands <value> is a "
-			"decimal (or hex) number, default is buffer size.\n\n");
+			"\n  Ignored.\n\n");
 	fprintf(e, "\n");
 
 	/* =============================== */
@@ -266,7 +264,7 @@ static int process_argument(args_t * args, int opt, const char *optarg)
 		args->offset = strdup(optarg);
 		break;
 	case o_BUFFER:		/* buffer */
-		args->buffer = strdup(optarg);
+		/* We ignore it, it's useless but kept for backwards compat */
 		break;
 	case f_FORCE:		/* force */
 		args->force = (flag_t) opt;
@@ -449,7 +447,6 @@ static int validate_args(args_t * args)
 			return -1;
 		}
 
-		UNSUP_OPT(buffer, probe);
 	} else if (args->cmd == c_LIST) {
 		void syntax(void) {
 			fprintf(stderr, "Syntax: %s [<dst_type>:]<dst_target>"
@@ -462,7 +459,6 @@ static int validate_args(args_t * args)
 			return -1;
 		}
 
-		UNSUP_OPT(buffer, list);
 	} else if (args->cmd == c_READ) {
 		void syntax(void) {
 			fprintf(stderr, "Syntax: %s [<src_type>:]<src_source>"
@@ -520,7 +516,6 @@ static int validate_args(args_t * args)
 
 		REQ_FIELD(dst_name, trunc);
 
-		UNSUP_OPT(buffer, trunc);
 	} else if (args->cmd == c_USER) {
 		void syntax(void) {
 			fprintf(stderr, "Syntax: %s [<dst_type>:]<dst_target>"
@@ -531,7 +526,6 @@ static int validate_args(args_t * args)
 
 		REQ_FIELD(dst_name, user);
 
-		UNSUP_OPT(buffer, user);
 	} else if (args->cmd == c_COPY) {
 		void syntax(void) {
 			fprintf(stderr, "Syntax: %s [<src_type>:]<src_target>"
@@ -614,8 +608,6 @@ static void args_dump(args_t * args)
 	printf("cmd[%c]\n", args->cmd);
 	if (args->offset != NULL)
 		printf("offset[%s]\n", args->offset);
-	if (args->buffer != NULL)
-		printf("buffer[%s]\n", args->buffer);
 	if (args->force != 0)
 		printf("force[%c]\n", args->force);
 	if (args->protected != 0)

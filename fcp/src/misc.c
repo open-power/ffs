@@ -551,11 +551,11 @@ int fcp_read_entry(ffs_t * src, const char * name, FILE * out)
 	if (__ffs_info(src, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	uint32_t buffer_count;
-	if (__ffs_info(src, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
+	uint32_t block_count;
+	if (__ffs_info(src, FFS_INFO_BLOCK_COUNT, &block_count) < 0)
 		return -1;
 
-	size_t buffer_size = block_size * buffer_count;
+	size_t buffer_size = block_size * block_count;
 	RAII(void*, buffer, malloc(buffer_size), free);
 	if (buffer == NULL) {
 		ERRNO(errno);
@@ -621,11 +621,11 @@ int fcp_write_entry(ffs_t * dst, const char * name, FILE * in)
 	if (__ffs_info(dst, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	uint32_t buffer_count;
-	if (__ffs_info(dst, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
+	uint32_t block_count;
+	if (__ffs_info(dst, FFS_INFO_BLOCK_COUNT, &block_count) < 0)
 		return -1;
 
-	size_t buffer_size = block_size * buffer_count;
+	size_t buffer_size = block_size * block_count;
 	RAII(void*, buffer, malloc(buffer_size), free);
 	if (buffer == NULL) {
 		ERRNO(errno);
@@ -697,11 +697,11 @@ int fcp_erase_entry(ffs_t * dst, const char * name, char fill)
 	if (__ffs_info(dst, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	uint32_t buffer_count;
-	if (__ffs_info(dst, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
+	uint32_t block_count;
+	if (__ffs_info(dst, FFS_INFO_BLOCK_COUNT, &block_count) < 0)
 		return -1;
 
-	size_t buffer_size = block_size * buffer_count;
+	size_t buffer_size = block_size * block_count;
 	RAII(void*, buffer, malloc(buffer_size), free);
 	if (buffer == NULL) {
 		ERRNO(errno);
@@ -774,11 +774,11 @@ int fcp_copy_entry(ffs_t * src, const char * src_name,
 	if (__ffs_info(src, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	uint32_t buffer_count;
-	if (__ffs_info(dst, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
+	uint32_t block_count;
+	if (__ffs_info(dst, FFS_INFO_BLOCK_COUNT, &block_count) < 0)
 		return -1;
 
-	size_t buffer_size = block_size * buffer_count;
+	size_t buffer_size = block_size * block_count;
 	RAII(void*, buffer, malloc(buffer_size), free);
 	if (buffer == NULL) {
 		ERRNO(errno);
@@ -851,11 +851,11 @@ int fcp_compare_entry(ffs_t * src, const char * src_name,
 	if (__ffs_info(src, FFS_INFO_BLOCK_SIZE, &block_size) < 0)
 		return -1;
 
-	uint32_t buffer_count;
-	if (__ffs_info(dst, FFS_INFO_BUFFER_COUNT, &buffer_count) < 0)
+	uint32_t block_count;
+	if (__ffs_info(dst, FFS_INFO_BLOCK_COUNT, &block_count) < 0)
 		return -1;
 
-	size_t buffer_size = block_size * buffer_count;
+	size_t buffer_size = block_size * block_count;
 
 	RAII(void*, src_buffer, malloc(buffer_size), free);
 	if (src_buffer == NULL) {

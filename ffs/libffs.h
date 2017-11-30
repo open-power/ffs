@@ -52,9 +52,6 @@ struct ffs {
     FILE * file;
     uint32_t count;
 
-    void * buf;			// FILE* buffer
-    uint32_t buf_count;		// multiple of hdr->block_size
-
     bool dirty;
 };
 
@@ -76,7 +73,6 @@ typedef struct ffs_exception ffs_exception_t;
 #define FFS_INFO_ENTRY_COUNT		4
 #define FFS_INFO_BLOCK_SIZE		5
 #define FFS_INFO_BLOCK_COUNT		6
-#define FFS_INFO_BUFFER_COUNT		7
 #define FFS_INFO_OFFSET			8
 
 #define FFS_CHECK_PATH			-3
@@ -107,9 +103,6 @@ extern ffs_t * __ffs_open(const char *, off_t)
 /*! @cond */ __nonnull ((1)) /*! @endcond */ ;
 
 extern int __ffs_info(ffs_t *, int, uint32_t *)
-/*! @cond */ __nonnull ((1)) /*! @endcond */ ;
-
-extern int __ffs_buffer(ffs_t *, size_t)
 /*! @cond */ __nonnull ((1)) /*! @endcond */ ;
 
 extern int __ffs_close(ffs_t *)

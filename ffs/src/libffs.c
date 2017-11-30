@@ -583,25 +583,9 @@ ffs_t *__ffs_fopen(FILE * file, off_t offset)
 			goto error;
 	}
 
-	self->buf_count = 1;	// default to 1
-
-	self->buf = malloc(self->buf_count * self->hdr->block_size);
-	if (self->hdr == NULL) {
-		ERRNO(errno);
-		goto error;
-	}
-
-	if (setvbuf(self->file, self->buf, _IOFBF,
-		    self->buf_count * self->hdr->block_size) != 0) {
-		ERRNO(errno);
-		goto error;
-	}
-
 	if (false) {
  error:
 		if (self != NULL) {
-			if (self->buf != NULL)
-				free(self->buf), self->buf = NULL;
 			if (self->hdr != NULL)
 				free(self->hdr), self->hdr = NULL;
 
@@ -670,9 +654,6 @@ int __ffs_info(ffs_t * self, int name, uint32_t *value)
 	case FFS_INFO_BLOCK_COUNT:
 		*value = self->hdr->block_count;
 		break;
-	case FFS_INFO_BUFFER_COUNT:
-		*value = self->buf_count;
-		break;
 	case FFS_INFO_OFFSET:
 		*value = self->offset;
 		break;
@@ -684,34 +665,6 @@ int __ffs_info(ffs_t * self, int name, uint32_t *value)
 	return 0;
 }
 
-int __ffs_buffer(ffs_t * self, size_t size)
-{
-	assert(self != NULL);
-
-	if (size == 0)
-		size =  self->hdr->block_size;
-
-	if (self->buf != NULL) {
-		free(self->buf);
-		self->buf_count = 0;
-	}
-
-	self->buf_count = size / self->hdr->block_size;
-	size = self->buf_count * self->hdr->block_size;
-
-	self->buf = malloc(size);
-	if (self->buf == NULL) {
-		ERRNO(errno);
-		return -1;
-	}
-
-	if (setvbuf(self->file, self->buf, _IOFBF, size) < 0) {
-		ERRNO(errno);
-		return -1;
-	}
-
-	return 0;
-}
 
 int __ffs_fclose(ffs_t * self)
 {
@@ -722,8 +675,6 @@ int __ffs_fclose(ffs_t * self)
 		if (ffs_flush(self) < 0)
 			return -1;
 
-	if (self->buf != NULL)
-		free(self->buf), self->buf = NULL;
 	if (self->hdr != NULL)
 		free(self->hdr), self->hdr = NULL;
 
