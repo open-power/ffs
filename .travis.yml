@@ -6,4 +6,20 @@ dist: trusty
 script:
     - autoreconf -i && ./configure && make
     - PATH=./fpart/:./fcp/:./ffs/:$PATH ./fpart/fpart.sh 
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "m65kiPIUnax5cog7vpbQf2cEiqTYt34rTg0/zWPIPMuc2qrmsk65wO2wNLYHT1N1SyY/24Rva07/n5AYWW6SzYJjTprwroTSvUDUAYtsQ42jjY+mD3PiK+0aMXbuHwF35gxIcgovKqy8PoMdowYQpkDW30jUbKPnxs2hutVll4o="
+before_install:
+      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
+addons:
+  coverity_scan:
+    project:
+      name: openpower/ffs
+      description: "OpenPOWER FFS Utilities"
+    notification_email: stewart@linux.vnet.ibm.com
+    build_command_prepend: "autoreconf -i && ./configure"
+    build_command: "make"
+    branch_pattern: coverity_scan
