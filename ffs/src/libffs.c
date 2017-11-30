@@ -1020,6 +1020,34 @@ int __ffs_entry_add(ffs_t * self, const char *path, off_t offset, uint32_t size,
 
 	hdr->entry_count++;
 
+    // Need to update 'part' entry as well as ffs hdr
+    // if the required number of blocks changes
+    uint32_t blocksNeeded = (hdr->entry_count * hdr->entry_size + FFS_HDR_SIZE_NO_ENTRY) / hdr->block_size;
+    if(hdr->entry_count * hdr->entry_size + FFS_HDR_SIZE_NO_ENTRY % hdr->block_size)
+    {
+        blocksNeeded++;
+    }
+
+    if(hdr->size != blocksNeeded)
+    {
+        ffs_entry_t entry;
+        if (__ffs_entry_find(self, "part", &entry) == false) {
+            UNEXPECTED("entry '%s' not found in table at offset '%llx'",
+                       "part", (long long)self->offset);
+                       return -1;
+        }
+
+        int find_entry_id(ffs_entry_t * __entry) {
+              return entry.id == __entry->id;
+        }
+
+        ffs_entry_t *entry_p = __iterate_entries(hdr, find_entry_id);
+        assert(entry_p != NULL);
+
+        hdr->size = blocksNeeded;
+        entry_p->size = blocksNeeded;
+        entry_p->actual = blocksNeeded * hdr->block_size;
+    }
 	self->dirty = true;
 
 	return 0;
