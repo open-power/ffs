@@ -82,13 +82,6 @@
 #define __unused__		__attribute__ ((__unused__))
 
 /*!
- * @def __const
- * @hideinitializer
- * @brief Const identifier attribute
- */
-#define __const			__attribute__ ((__const__))
-
-/*!
  * @def __must_check
  * @hideinitializer
  * @brief Warning about "unused" identifier attribute
